@@ -7,13 +7,14 @@ use App\Models\Arsip;
 
 class ArsipInaktifController extends Controller
 {
-    // Menampilkan data arsip yang sudah dipindahkan (status = inaktif)
     public function index()
-    {
-        $arsips = Arsip::where('status', 'inaktif')->get();
-        return view('arsip_inaktif.index', compact('arsips'));
-    }
-
+{
+    $arsips = Arsip::where('status', 'inaktif')->get();
+    
+    // Sesuaikan dengan nama folder view yang bener di project lu:
+    return view('arsip_inaktif.index', compact('arsips')); 
+    // Atau kalau foldernya pakai strip: return view('arsip-inaktif.index', compact('arsips'));
+}
     // Fungsi logika memindahkan arsip dari aktif ke inaktif
     public function pindahkan(Request $request, $id)
     {

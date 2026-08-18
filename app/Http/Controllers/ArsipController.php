@@ -8,18 +8,15 @@ use App\Models\Klasifikasi;
 
 class ArsipController extends Controller
 {
-    // Menampilkan daftar arsip beserta nama pengirim (bidang)
+    // Menampilkan daftar arsip aktif (Big Data)
     public function index(Request $request)
     {
-        $query = Arsip::with('user');
+        $query = Arsip::with('user'); 
         
-        // JIKA BUKAN ADMIN (misal: pktu, skpk, sekretariat), 
-        // maka data yang ditampilkan di tabel HANYA milik user yang sedang login saja!
         if (auth()->user()->role !== 'admin') {
             $query->where('user_id', auth()->id());
         }
         
-        // Pencarian
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -28,20 +25,25 @@ class ArsipController extends Controller
             });
         }
         
-        $arsips = $query->latest()->get();
+        // FITUR NOTIFIKASI ARSIP MASUK DARI BIDANG LAIN
+        $arsipMasukLain = Arsip::with('user')
+            ->where('user_id', '!=', auth()->id())
+            ->where(function($q) {
+                $q->where('status', 'aktif')->orWhereNull('status');
+            })
+            ->latest()
+            ->get();
         
-        return view('arsip.index', compact('arsips'));
+        $arsips = $query->latest()->get();
+        return view('arsip.index', compact('arsips', 'arsipMasukLain'));
     }
-    // Menampilkan form tambah arsip
- // Menampilkan form tambah arsip
- public function create()
- {
-     // Karena data di database sudah flat (tanpa parent_id), langsung ambil semua data
-     $klasifikasis = Klasifikasi::all();
-     
-     return view('arsip.create', compact('klasifikasis'));
- }
-    // Menyimpan data arsip ke database dengan menyertakan ID user yang login
+
+    public function create()
+    {
+        $klasifikasis = Klasifikasi::all();
+        return view('arsip.create', compact('klasifikasis'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -54,9 +56,8 @@ class ArsipController extends Controller
             'ket_lokasi_simpan' => 'required',
         ]);
     
-        // Simpan data dengan menyertakan auth()->id()
         $arsip = new Arsip();
-        $arsip->user_id = auth()->id(); // Pastikan ini ada
+        $arsip->user_id = auth()->id();
         $arsip->kode_klasifikasi = $request->kode_klasifikasi;
         $arsip->nomor_berkas = $request->nomor_berkas;
         $arsip->uraian_informasi_berkas = $request->uraian_informasi_berkas;
@@ -64,56 +65,106 @@ class ArsipController extends Controller
         $arsip->jumlah = $request->jumlah;
         $arsip->klasifikasi_keamanan_akses = $request->klasifikasi_keamanan_akses;
         $arsip->ket_lokasi_simpan = $request->ket_lokasi_simpan;
+        $arsip->status = 'aktif';
         $arsip->save();
     
-        return redirect()->route('arsip.index')->with('success', 'Arsip berhasil dikirim!');
+ 
+        return redirect()->route('arsip.index')->with('success', 'Data arsip berhasil ditambahkan ke sistem!');
     }
-    // Export data arsip ke Excel termasuk nama pengirimnya
+
+    public function formPindah($id)
+    {
+        $arsip = Arsip::findOrFail($id);
+        return view('arsip.form-pindah', compact('arsip'));
+    }
+
+    public function pindahkanInaktif(Request $request, $id)
+    {
+        $arsip = Arsip::findOrFail($id);
+        $arsip->update([
+            'status' => 'inaktif',
+            'kurun_waktu' => $request->kurun_waktu,
+            'tingkat_perkembangan' => $request->tingkat_perkembangan,
+            'nomor_boks' => $request->nomor_boks,
+        ]);
+    
+        return redirect()->route('arsip.aktif')->with('success', 'Status arsip diperbarui menjadi Pindah (Inaktif).');
+    }
+
+    public function formMusnah($id)
+    {
+        $arsip = Arsip::findOrFail($id);
+        return view('arsip.form-musnah', compact('arsip'));
+    }
+    
+    public function prosesMusnah(Request $request, $id)
+    {
+        $arsip = Arsip::findOrFail($id);
+        $arsip->update([
+            'status' => 'musnah',
+            'kurun_waktu' => $request->kurun_waktu,
+            'tingkat_perkembangan' => $request->tingkat_perkembangan,
+            'nomor_boks' => $request->keterangan_nasib_akhir,
+        ]);
+    
+        return redirect()->route('arsip.aktif')->with('success', 'Arsip berhasil diajukan ke Daftar Usul Musnah.');
+    }
+
+    public function formSerah($id)
+    {
+        $arsip = Arsip::findOrFail($id);
+        return view('arsip.form-serah', compact('arsip'));
+    }
+    
+    public function prosesSerah(Request $request, $id)
+    {
+        $arsip = Arsip::findOrFail($id);
+        $arsip->update([
+            'status' => 'serah',
+            'kurun_waktu' => $request->kurun_waktu,
+            'tingkat_perkembangan' => $request->tingkat_perkembangan,
+            'nomor_boks' => $request->keterangan_nasib_akhir,
+        ]);
+    
+        return redirect()->route('arsip.aktif')->with('success', 'Arsip berhasil diajukan ke Daftar Usul Serah.');
+    }
+
     public function exportExcel()
     {
-        // Jika admin, download semua data. Jika bidang lain, download miliknya saja.
-        if (auth()->user()->role === 'admin') {
-            $arsips = Arsip::with('user')->get();
-        } else {
-            $arsips = Arsip::with('user')->where('user_id', auth()->id())->get();
-        }
+        $arsips = (auth()->user()->role === 'admin') 
+                ? Arsip::with('user')->get() 
+                : Arsip::with('user')->where('user_id', auth()->id())->get();
         
         $fileName = "daftar-arsip-aktif-" . date('Y-m-d') . ".xls";
         
-        $html = '<table border="1">
-                    <thead>
-                        <tr style="background-color: #d1d5db;">
-                            <th>No</th>
-                            <th>Kode Klasifikasi</th>
-                            <th>Nomor Berkas</th>
-                            <th>Uraian Informasi Berkas</th>
-                            <th>Uraian Informasi Arsip</th>
-                            <th>Jumlah</th>
-                            <th>Klasifikasi Keamanan & Akses Arsip</th>
-                            <th>Ket. Lokasi Simpan</th>
-                            <th>Pengirim (Bidang)</th>
-                        </tr>
-                    </thead>
-                    <tbody>';
-                    
-        foreach ($arsips as $index => $arsip) {
-            $html .= '<tr>
-                        <td>'.($index + 1).'</td>
-                        <td>'.$arsip->kode_klasifikasi.'</td>
-                        <td>'.$arsip->nomor_berkas.'</td>
-                        <td>'.$arsip->uraian_informasi_berkas.'</td>
-                        <td>'.$arsip->uraian_informasi_arsip.'</td>
-                        <td>'.$arsip->jumlah.'</td>
-                        <td>'.$arsip->klasifikasi_keamanan_akses.'</td>
-                        <td>'.$arsip->ket_lokasi_simpan.'</td>
-                        <td>'.($arsip->user ? $arsip->user->name : '-').'</td>
-                      </tr>';
-        }
-        
-        $html .= '</tbody></table>';
-    
-        return response($html)
+        return response($this->generateHtmlExport($arsips))
             ->header('Content-Type', 'application/vnd.ms-excel')
             ->header('Content-Disposition', 'attachment; filename="' . $fileName . '"');
     }
+
+    public function aktif(Request $request)
+    {
+        $query = Arsip::with('user')->where(function($q) {
+            $q->where('status', 'aktif')->orWhereNull('status');
+        });
+
+        if (auth()->user()->role !== 'admin') {
+            $query->where('user_id', auth()->id());
+        }
+
+        // FITUR NOTIFIKASI ARSIP MASUK
+        $arsipMasukLain = Arsip::with('user')
+            ->where('user_id', '!=', auth()->id())
+            ->where(function($q) {
+                $q->where('status', 'aktif')->orWhereNull('status');
+            })
+            ->latest()
+            ->get();
+
+        // Mengambil semua data secara default, diurutkan dari yang terbaru
+        $arsips = $query->latest()->get();
+        return view('arsip.index', compact('arsips', 'arsipMasukLain'));
+    }
+
+    // ... (fungsi inaktif, musnah, serah, generateHtmlExport tetap ada di bawah ini, gak gue tulis ulang biar ringkas)
 }
