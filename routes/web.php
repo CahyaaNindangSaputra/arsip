@@ -12,11 +12,18 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
+// ... (route lain biarin)
+
+Route::get('/dashboard', [ArsipController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
 // Rute yang wajib login (termasuk Super Admin & Arsip)
 Route::middleware(['auth'])->group(function () {
     
     // Dashboard & Arsip Aktif (Big Data)
-    Route::get('/dashboard', [ArsipController::class, 'index'])->name('dashboard');
+   
     Route::get('/arsip', [ArsipController::class, 'index'])->name('arsip.index');
     Route::get('/arsip/create', [ArsipController::class, 'create'])->name('arsip.create');
     Route::post('/arsip', [ArsipController::class, 'store'])->name('arsip.store');

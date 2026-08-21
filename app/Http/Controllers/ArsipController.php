@@ -166,5 +166,37 @@ class ArsipController extends Controller
         return view('arsip.index', compact('arsips', 'arsipMasukLain'));
     }
 
-    // ... (fungsi inaktif, musnah, serah, generateHtmlExport tetap ada di bawah ini, gak gue tulis ulang biar ringkas)
+  // FITUR DASHBOARD BIG DATA
+  public function dashboard()
+  {
+      // 1. Hitung total semua arsip
+      $totalArsip = Arsip::count();
+
+      // 2. Hitung Arsip Aktif (yang statusnya 'aktif' atau kosong)
+      $arsipAktif = Arsip::where('status', 'aktif')->orWhereNull('status')->count();
+
+      // 3. Hitung Arsip Inaktif / Pindah
+      $arsipPindah = Arsip::whereIn('status', ['inaktif', 'pindah'])->count();
+
+      // 4. Hitung Arsip Usul Musnah
+      $arsipMusnah = Arsip::where('status', 'musnah')->count();
+
+      // 5. Ambil data Arsip Aktif terbaru buat ditampilin di tabel (Batasi 10 data aja biar ringan)
+      $arsips = Arsip::with('user')
+          ->where(function($q) {
+              $q->where('status', 'aktif')->orWhereNull('status');
+          })
+          ->latest()
+          ->take(10)
+          ->get();
+
+      // Lempar semua datanya ke view dashboard.blade.php
+      return view('dashboard', compact(
+          'totalArsip', 
+          'arsipAktif', 
+          'arsipPindah', 
+          'arsipMusnah', 
+          'arsips'
+      ));
+  }
 }
