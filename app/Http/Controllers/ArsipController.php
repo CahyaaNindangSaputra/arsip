@@ -69,7 +69,7 @@ class ArsipController extends Controller
         $arsip->save();
     
  
-        return redirect()->route('arsip.index')->with('success', 'Data arsip berhasil ditambahkan ke sistem!');
+        return redirect()->route('dashboard')->with('success', 'Data arsip berhasil ditambahkan ke sistem!');
     }
 
     public function formPindah($id)
@@ -152,51 +152,88 @@ class ArsipController extends Controller
             $query->where('user_id', auth()->id());
         }
 
-        // FITUR NOTIFIKASI ARSIP MASUK
-        $arsipMasukLain = Arsip::with('user')
-            ->where('user_id', '!=', auth()->id())
-            ->where(function($q) {
-                $q->where('status', 'aktif')->orWhereNull('status');
-            })
-            ->latest()
-            ->get();
-
         // Mengambil semua data secara default, diurutkan dari yang terbaru
         $arsips = $query->latest()->get();
-        return view('arsip.index', compact('arsips', 'arsipMasukLain'));
+        
+        // GANTI BAGIAN INI: Arahkan ke view arsip.aktif yang baru kita buat
+        return view('arsip.aktif', compact('arsips'));
     }
 
-  // FITUR DASHBOARD BIG DATA
-  public function dashboard()
-  {
-      // 1. Hitung total semua arsip
-      $totalArsip = Arsip::count();
 
-      // 2. Hitung Arsip Aktif (yang statusnya 'aktif' atau kosong)
-      $arsipAktif = Arsip::where('status', 'aktif')->orWhereNull('status')->count();
+ public function dashboard()
+ {
+     // 1. Hitung total semua arsip
+     $totalArsip = Arsip::count();
 
-      // 3. Hitung Arsip Inaktif / Pindah
-      $arsipPindah = Arsip::whereIn('status', ['inaktif', 'pindah'])->count();
+     // 2. Hitung Arsip Aktif
+     $arsipAktif = Arsip::where('status', 'aktif')->orWhereNull('status')->count();
 
-      // 4. Hitung Arsip Usul Musnah
-      $arsipMusnah = Arsip::where('status', 'musnah')->count();
+     // 3. Hitung Arsip Inaktif / Pindah
+     $arsipPindah = Arsip::whereIn('status', ['inaktif', 'pindah'])->count();
 
-      // 5. Ambil data Arsip Aktif terbaru buat ditampilin di tabel (Batasi 10 data aja biar ringan)
-      $arsips = Arsip::with('user')
-          ->where(function($q) {
-              $q->where('status', 'aktif')->orWhereNull('status');
-          })
-          ->latest()
-          ->take(10)
-          ->get();
+     // 4. Hitung Arsip Usul Musnah
+     $arsipMusnah = Arsip::where('status', 'musnah')->count();
 
-      // Lempar semua datanya ke view dashboard.blade.php
-      return view('dashboard', compact(
-          'totalArsip', 
-          'arsipAktif', 
-          'arsipPindah', 
-          'arsipMusnah', 
-          'arsips'
-      ));
-  }
+     // 5. Hitung Arsip Usul Serah
+     $arsipSerah = Arsip::where('status', 'serah')->count();
+
+     // 6. AMBIL SEMUA DATA (Tanpa filter status, biar tabel Big Data nampilin semuanya)
+     $arsips = Arsip::with('user')->latest()->get();
+
+     // Lempar semua datanya ke view dashboard.blade.php
+     return view('dashboard', compact(
+         'totalArsip', 
+         'arsipAktif', 
+         'arsipPindah', 
+         'arsipMusnah', 
+         'arsipSerah',
+         'arsips'
+     ));
+ }
+  // =====================================================================
+    // FUNGSI ARSIP INAKTIF (PINDAH)
+    // =====================================================================
+    public function inaktif(Request $request)
+    {
+        $query = Arsip::with('user')->whereIn('status', ['inaktif', 'pindah']);
+
+        if (auth()->user()->role !== 'admin') {
+            $query->where('user_id', auth()->id());
+        }
+
+        // Simpan ke variabel $arsipInaktif (sesuai nama di inaktif.blade.php)
+        $arsipInaktif = $query->latest()->get();
+        
+        // ARAHIN KE FILE inaktif.blade.php (Jangan ke index.blade.php lagi)
+        return view('arsip.inaktif', compact('arsipInaktif'));
+    }
+    public function musnah(Request $request)
+    {
+        // Cari yang statusnya 'musnah'
+        $query = Arsip::with('user')->where('status', 'musnah');
+
+        if (auth()->user()->role !== 'admin') {
+            $query->where('user_id', auth()->id());
+        }
+
+        $arsips = $query->latest()->get();
+        
+        // Lempar ke master tabel
+        return view('arsip.index', compact('arsips'));
+    }
+    public function serah(Request $request)
+    {
+        // Cari yang statusnya 'serah'
+        $query = Arsip::with('user')->where('status', 'serah');
+
+        if (auth()->user()->role !== 'admin') {
+            $query->where('user_id', auth()->id());
+        }
+
+        $arsips = $query->latest()->get();
+        
+        // Lempar ke master tabel
+        return view('arsip.index', compact('arsips'));
+    }
+  
 }

@@ -1,10 +1,11 @@
 <x-app-layout>
-    <!-- Dummy Data Sementara (Biar nggak error kalau controller belum siap) -->
+    <!-- Dummy Data Sementara -->
     @php
         $totalArsip = $totalArsip ?? \App\Models\Arsip::count();
         $arsipAktif = $arsipAktif ?? \App\Models\Arsip::where('status', 'aktif')->orWhereNull('status')->count();
         $arsipPindah = $arsipPindah ?? \App\Models\Arsip::whereIn('status', ['inaktif', 'pindah'])->count();
         $arsipMusnah = $arsipMusnah ?? \App\Models\Arsip::where('status', 'musnah')->count();
+        $arsipSerah = $arsipSerah ?? \App\Models\Arsip::where('status', 'serah')->count();
         $arsips = $arsips ?? \App\Models\Arsip::latest()->get(); 
     @endphp
 
@@ -26,65 +27,55 @@
             </div>
         </div>
 
-        <!-- 4 KOTAK ANALISIS -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <!-- Kotak 1 -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 text-xl shrink-0">
-                    <i class="fas fa-database"></i>
-                </div>
+        <!-- 5 KOTAK ANALISIS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 text-xl shrink-0"><i class="fas fa-database"></i></div>
                 <div>
-                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Data</p>
-                    <h3 class="text-2xl font-black text-slate-800">{{ $totalArsip }}</h3>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Data</p>
+                    <h3 class="text-xl font-black text-slate-800">{{ $totalArsip }}</h3>
                 </div>
             </div>
-            <!-- Kotak 2 -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 text-xl shrink-0">
-                    <i class="fas fa-folder-open"></i>
-                </div>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 text-xl shrink-0"><i class="fas fa-folder-open"></i></div>
                 <div>
-                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Arsip Aktif</p>
-                    <h3 class="text-2xl font-black text-slate-800">{{ $arsipAktif }}</h3>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Arsip Aktif</p>
+                    <h3 class="text-xl font-black text-slate-800">{{ $arsipAktif }}</h3>
                 </div>
             </div>
-            <!-- Kotak 3 -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 text-xl shrink-0">
-                    <i class="fas fa-box-archive"></i>
-                </div>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 text-xl shrink-0"><i class="fas fa-box-archive"></i></div>
                 <div>
-                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Inaktif (Pindah)</p>
-                    <h3 class="text-2xl font-black text-slate-800">{{ $arsipPindah }}</h3>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Inaktif (Pindah)</p>
+                    <h3 class="text-xl font-black text-slate-800">{{ $arsipPindah }}</h3>
                 </div>
             </div>
-            <!-- Kotak 4 -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-600 text-xl shrink-0">
-                    <i class="fas fa-fire-alt"></i>
-                </div>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-600 text-xl shrink-0"><i class="fas fa-fire-alt"></i></div>
                 <div>
-                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Usul Musnah</p>
-                    <h3 class="text-2xl font-black text-slate-800">{{ $arsipMusnah }}</h3>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Usul Musnah</p>
+                    <h3 class="text-xl font-black text-slate-800">{{ $arsipMusnah }}</h3>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 text-xl shrink-0"><i class="fas fa-file-export"></i></div>
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Usul Serah</p>
+                    <h3 class="text-xl font-black text-slate-800">{{ $arsipSerah }}</h3>
                 </div>
             </div>
         </div>
 
-        <!-- TABEL ARSIP (Persis Seperti Gambar Lu) -->
+        <!-- TABEL ARSIP -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden" x-data="{ search: '', selectedBagian: '', selectedStatus: '' }">
             
             <!-- Toolbar: Search, Filter, Buttons -->
             <div class="p-4 border-b border-slate-200 flex flex-col lg:flex-row justify-between items-center gap-4">
-                
-                <!-- Kiri: Input & Select -->
                 <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
                     <div class="relative w-full sm:w-64">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                            <i class="fas fa-search text-sm"></i>
-                        </span>
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fas fa-search text-sm"></i></span>
                         <input type="text" x-model="search" placeholder="Cari uraian, no berkas..." class="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                     </div>
-
                     <select x-model="selectedStatus" class="w-full sm:w-40 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Semua Status</option>
                         <option value="aktif">Aktif</option>
@@ -92,7 +83,6 @@
                         <option value="musnah">Musnah</option>
                         <option value="serah">Serah</option>
                     </select>
-
                     <select x-model="selectedBagian" class="w-full sm:w-40 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Semua Bidang</option>
                         @php $daftarBagian = \App\Models\User::where('role', '!=', 'admin')->pluck('name'); @endphp
@@ -101,21 +91,16 @@
                         @endforeach
                     </select>
                 </div>
-
-                <!-- Kanan: Tombol -->
                 <div class="flex items-center gap-2 w-full lg:w-auto justify-end">
                     <a href="{{ route('arsip.exportExcel') }}" class="inline-flex items-center gap-2 bg-[#10b981] hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </a>
-                   {{--  <a href="{{ route('arsip.create') }}" class="inline-flex items-center gap-2 bg-[#3b82f6] hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
-                        <i class="fas fa-plus"></i> Tambah Arsip
-                    </a> --}}
                 </div>
             </div>
 
-            <!-- Tabel -->
+            <!-- Tabel (Dengan Aksi dan Unit Pengolah) -->
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm border-collapse whitespace-nowrap min-w-[1200px]">
+                <table class="w-full text-left text-sm border-collapse whitespace-nowrap min-w-[1300px]">
                     <thead class="bg-[#f8fafc] text-slate-600 border-b border-slate-200">
                         <tr>
                             <th class="px-5 py-3.5 font-semibold text-center w-16">No</th>
@@ -129,7 +114,7 @@
                             <th class="px-5 py-3.5 font-semibold text-center">No Boks</th>
                             <th class="px-5 py-3.5 font-semibold text-center">Sifat</th>
                             <th class="px-5 py-3.5 font-semibold text-center">Lokasi</th>
-                            <th class="px-5 py-3.5 font-semibold">Pengirim</th>
+                            <th class="px-5 py-3.5 font-semibold">Unit Pengolah</th>
                             <th class="px-5 py-3.5 font-semibold text-center">Status</th>
                             @if(auth()->user()->role == 'admin')
                                 <th class="px-5 py-3.5 font-semibold text-center">Aksi</th>
@@ -150,7 +135,6 @@
                                         (selectedStatus === '' || '{{ $statusArsip }}' === selectedStatus)">
                                 
                                 <td class="px-5 py-3 text-center">{{ $index + 1 }}</td>
-                                <!-- Kode warna biru seperti di gambar lu -->
                                 <td class="px-5 py-3 font-medium text-blue-600">{{ str_replace(['_inv', '_eva', '_pen', 'inv', 'eva', 'pen'], '', $arsip->kode_klasifikasi) }}</td>
                                 <td class="px-5 py-3 text-slate-700">{{ $arsip->nomor_berkas }}</td>
                                 <td class="px-5 py-3 text-slate-700">{{ $arsip->uraian_informasi_berkas }}</td>
@@ -162,15 +146,13 @@
                                 <td class="px-5 py-3 text-center text-slate-400">{{ $arsip->klasifikasi_keamanan_akses }}</td>
                                 <td class="px-5 py-3 text-center text-slate-400">{{ $arsip->ket_lokasi_simpan }}</td>
                                 <td class="px-5 py-3 text-slate-700 font-medium">{{ $arsip->user ? $arsip->user->name : 'Admin' }}</td>
-                                
-                                <!-- Status Pill -->
                                 <td class="px-5 py-3 text-center">
                                     <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">
                                         {{ $statusArsip ?: 'AKTIF' }}
                                     </span>
                                 </td>
-
-                                <!-- Aksi Text Link Warna Warni -->
+                                
+                                <!-- Kembalinya Kolom Aksi -->
                                 @if(auth()->user()->role == 'admin')
                                     <td class="px-5 py-3 text-center">
                                         <div class="flex items-center justify-center gap-3">
@@ -183,7 +165,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ auth()->user()->role == 'admin' ? 14 : 13 }}" class="px-4 py-12 text-center text-slate-400">
+                                <td colspan="14" class="px-4 py-12 text-center text-slate-400">
                                     Belum ada data arsip yang tersedia.
                                 </td>
                             </tr>
@@ -192,6 +174,5 @@
                 </table>
             </div>
         </div>
-        
     </div>
 </x-app-layout>

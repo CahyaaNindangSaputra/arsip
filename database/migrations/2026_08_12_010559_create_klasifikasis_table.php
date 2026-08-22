@@ -12,7 +12,8 @@ return new class extends Migration
         Schema::create('klasifikasis', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('parent_id')->nullable(); 
-            $table->string('kode')->unique(); 
+            // HAPUS ->unique() DISINI BIAR BISA NERIMA KODE KEMBAR TANPA ERROR
+            $table->string('kode'); 
             $table->string('nama'); 
             $table->string('sifat')->default('B'); 
             $table->timestamps();
@@ -106,10 +107,7 @@ return new class extends Migration
         DB::table('klasifikasis')->insertOrIgnore([
             ['parent_id' => $id_hm, 'kode' => 'HM.01', 'nama' => 'Penerangan dan Publikasi', 'sifat' => 'B'],
             ['parent_id' => $id_hm, 'kode' => 'HM.02', 'nama' => 'Dengar pendapat/hearing', 'sifat' => 'B'],
-            
-            // AKAL-AKALAN DATABASE: Pakai tambahan "_2" biar urutan tetap 02 tapi tidak error duplicate
-            ['parent_id' => $id_hm, 'kode' => 'HM.02_2', 'nama' => 'Hubungan Antar Lembaga', 'sifat' => 'B'], 
-            
+            ['parent_id' => $id_hm, 'kode' => 'HM.02', 'nama' => 'Hubungan Antar Lembaga', 'sifat' => 'B'], 
             ['parent_id' => $id_hm, 'kode' => 'HM.03', 'nama' => 'Keprotokolan', 'sifat' => 'B'],
             ['parent_id' => $id_hm, 'kode' => 'HM.04', 'nama' => 'Dokumentasi dan Penerbitan', 'sifat' => 'B'],
             ['parent_id' => $id_hm, 'kode' => 'HM.05', 'nama' => 'Penghargaan/Tanda Kenang-kenangan', 'sifat' => 'B'],
@@ -117,19 +115,20 @@ return new class extends Migration
             ['parent_id' => $id_hm, 'kode' => 'HM.07', 'nama' => 'Dokumen Hosting', 'sifat' => 'B'],
         ]);
 
-        $id_hm_2_2 = DB::table('klasifikasis')->where('kode', 'HM.02_2')->value('id');
+        // Karena kode kembar, tarik ID berdasarkan kode DAN nama
+        $id_hm_2_2 = DB::table('klasifikasis')->where('kode', 'HM.02')->where('nama', 'Hubungan Antar Lembaga')->value('id');
         $id_hm_3 = DB::table('klasifikasis')->where('kode', 'HM.03')->value('id');
 
         DB::table('klasifikasis')->insertOrIgnore([
-            // Anak dari HM.02_2 (Hubungan Antar Lembaga)
-            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02_2.01', 'nama' => 'Forkompimda', 'sifat' => 'B'],
-            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02_2.02', 'nama' => 'Organisasi Kearsipan Nasional dan Internasional', 'sifat' => 'B'],
-            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02_2.03', 'nama' => 'Instansi Vertikal', 'sifat' => 'B'],
-            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02_2.04', 'nama' => 'Organisasi Kemasyarakatan', 'sifat' => 'B'],
-            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02_2.05', 'nama' => 'Perguruan Tinggi/Sekolah', 'sifat' => 'B'],
-            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02_2.06', 'nama' => 'Partai Politik', 'sifat' => 'B'],
-            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02_2.07', 'nama' => 'Swasta', 'sifat' => 'B'],
-            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02_2.08', 'nama' => 'Bakohumas', 'sifat' => 'B'],
+            // Anak dari HM.02 (Hubungan Antar Lembaga)
+            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02.01', 'nama' => 'Forkompimda', 'sifat' => 'B'],
+            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02.02', 'nama' => 'Organisasi Kearsipan Nasional dan Internasional', 'sifat' => 'B'],
+            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02.03', 'nama' => 'Instansi Vertikal', 'sifat' => 'B'],
+            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02.04', 'nama' => 'Organisasi Kemasyarakatan', 'sifat' => 'B'],
+            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02.05', 'nama' => 'Perguruan Tinggi/Sekolah', 'sifat' => 'B'],
+            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02.06', 'nama' => 'Partai Politik', 'sifat' => 'B'],
+            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02.07', 'nama' => 'Swasta', 'sifat' => 'B'],
+            ['parent_id' => $id_hm_2_2, 'kode' => 'HM.02.08', 'nama' => 'Bakohumas', 'sifat' => 'B'],
 
             // Anak dari HM.03 (Keprotokolan)
             ['parent_id' => $id_hm_3, 'kode' => 'HM.03.01', 'nama' => 'Upacara/Acara Kedinasan', 'sifat' => 'B'],
@@ -146,10 +145,7 @@ return new class extends Migration
             // Level Anak HK
             ['parent_id' => $id_hk, 'kode' => 'HK.01', 'nama' => 'Program Legislasi.', 'sifat' => 'B'],
             ['parent_id' => $id_hk, 'kode' => 'HK.02', 'nama' => 'Produk Hukum.', 'sifat' => 'B'],
-            
-            // AKAL-AKALAN: Pakai tambahan "_2" biar urutan tetap 02 (sesuai dokumen) tapi tidak error duplicate
-            ['parent_id' => $id_hk, 'kode' => 'HK.02_2', 'nama' => 'Perjanjian Kerjasama.', 'sifat' => 'B'],
-            
+            ['parent_id' => $id_hk, 'kode' => 'HK.02', 'nama' => 'Perjanjian Kerjasama.', 'sifat' => 'B'],
             ['parent_id' => $id_hk, 'kode' => 'HK.03', 'nama' => 'Bantuan Hukum.', 'sifat' => 'B'],
             ['parent_id' => $id_hk, 'kode' => 'HK.04', 'nama' => 'Telaah Hukum.', 'sifat' => 'B'],
             ['parent_id' => $id_hk, 'kode' => 'HK.05', 'nama' => 'Sosialisasi Hukum.', 'sifat' => 'B'],
@@ -161,8 +157,8 @@ return new class extends Migration
 
         // Ambil ID anak untuk masukin Cucu
         $id_hk_1 = DB::table('klasifikasis')->where('kode', 'HK.01')->value('id');
-        $id_hk_2 = DB::table('klasifikasis')->where('kode', 'HK.02')->value('id');
-        $id_hk_2_2 = DB::table('klasifikasis')->where('kode', 'HK.02_2')->value('id');
+        $id_hk_2 = DB::table('klasifikasis')->where('kode', 'HK.02')->where('nama', 'Produk Hukum.')->value('id');
+        $id_hk_2_2 = DB::table('klasifikasis')->where('kode', 'HK.02')->where('nama', 'Perjanjian Kerjasama.')->value('id');
         $id_hk_3 = DB::table('klasifikasis')->where('kode', 'HK.03')->value('id');
         $id_hk_4 = DB::table('klasifikasis')->where('kode', 'HK.04')->value('id');
         $id_hk_6 = DB::table('klasifikasis')->where('kode', 'HK.06')->value('id');
@@ -179,9 +175,9 @@ return new class extends Migration
             ['parent_id' => $id_hk_2, 'kode' => 'HK.02.02', 'nama' => 'Proses Penyusunan Peraturan Gubernur.', 'sifat' => 'B'],
             ['parent_id' => $id_hk_2, 'kode' => 'HK.02.03', 'nama' => 'Proses Penyusunan Keputusan Gubernur.', 'sifat' => 'B'],
 
-            // Anak dari HK.02_2 (Perjanjian Kerjasama)
-            ['parent_id' => $id_hk_2_2, 'kode' => 'HK.02_2.01', 'nama' => 'Kerjasama Dalam Negeri.', 'sifat' => 'B'],
-            ['parent_id' => $id_hk_2_2, 'kode' => 'HK.02_2.02', 'nama' => 'Kerjasama Luar Negeri.', 'sifat' => 'B'],
+            // Anak dari HK.02 (Perjanjian Kerjasama)
+            ['parent_id' => $id_hk_2_2, 'kode' => 'HK.02.01', 'nama' => 'Kerjasama Dalam Negeri.', 'sifat' => 'B'],
+            ['parent_id' => $id_hk_2_2, 'kode' => 'HK.02.02', 'nama' => 'Kerjasama Luar Negeri.', 'sifat' => 'B'],
 
             // Anak dari HK.03
             ['parent_id' => $id_hk_3, 'kode' => 'HK.03.01', 'nama' => 'Bantuan Hukum Kasus Perdata.', 'sifat' => 'B'],
@@ -325,10 +321,10 @@ return new class extends Migration
         DB::table('klasifikasis')->insertOrIgnore([
             // --- Level Anak PR (Perencanaan) ---
             ['parent_id' => $id_pr, 'kode' => 'PR.01', 'nama' => 'Usulan Perencanaan.', 'sifat' => 'B'],
-            ['parent_id' => $id_pr, 'kode' => 'PR.02', 'nama' => 'Pokok-Pokok Kebijakan dan Strategi Pembangunan.', 'sifat' => 'B'], // Loncat urutan dari gambar
+            ['parent_id' => $id_pr, 'kode' => 'PR.02', 'nama' => 'Pokok-Pokok Kebijakan dan Strategi Pembangunan.', 'sifat' => 'B'], 
             ['parent_id' => $id_pr, 'kode' => 'PR.03', 'nama' => 'Musyawarah Perencanaan Pembangunan (Musrenbang).', 'sifat' => 'B'],
             ['parent_id' => $id_pr, 'kode' => 'PR.04', 'nama' => 'Rencana Kerja Tahunan.', 'sifat' => 'B'],
-            ['parent_id' => $id_pr, 'kode' => 'PR.05', 'nama' => 'Rencana Pembangunan Wilayah Startegis.', 'sifat' => 'B'], // Sesuai typo dokumen
+            ['parent_id' => $id_pr, 'kode' => 'PR.05', 'nama' => 'Rencana Pembangunan Wilayah Startegis.', 'sifat' => 'B'], 
             ['parent_id' => $id_pr, 'kode' => 'PR.06', 'nama' => 'Pembangunan Daerah Perbatasan Provinsi Jawa Barat.', 'sifat' => 'B'],
             ['parent_id' => $id_pr, 'kode' => 'PR.07', 'nama' => 'Indikator Keberhasilan Pembangunan.', 'sifat' => 'B'],
             ['parent_id' => $id_pr, 'kode' => 'PR.08', 'nama' => 'Kerjasama Perencanaan.', 'sifat' => 'B'],
@@ -439,8 +435,7 @@ return new class extends Migration
             ['parent_id' => $id_lb, 'kode' => 'LB.04', 'nama' => 'Penelitian dan Pengembangan Bidang Ilmu pengetahuan dan Teknologi.', 'sifat' => 'B'],
             ['parent_id' => $id_lb, 'kode' => 'LB.05', 'nama' => 'Penelitian dan Pengembangan Teknologi Tepat Guna.', 'sifat' => 'B'],
             
-            // AKAL-AKALAN DATABASE: Typo dokumen, 05 dipakai dua kali
-            ['parent_id' => $id_lb, 'kode' => 'LB.05_2', 'nama' => 'Kerjasama Penelitian dan Pengembangan.', 'sifat' => 'B'],
+            ['parent_id' => $id_lb, 'kode' => 'LB.05', 'nama' => 'Kerjasama Penelitian dan Pengembangan.', 'sifat' => 'B'],
             
             ['parent_id' => $id_lb, 'kode' => 'LB.06', 'nama' => 'Hasil Penelitian dan Pengembangan.', 'sifat' => 'B'],
             ['parent_id' => $id_lb, 'kode' => 'LB.07', 'nama' => 'Pengembangan Inovasi Daerah.', 'sifat' => 'B'],
@@ -452,8 +447,8 @@ return new class extends Migration
         $id_lb_2 = DB::table('klasifikasis')->where('kode', 'LB.02')->value('id');
         $id_lb_3 = DB::table('klasifikasis')->where('kode', 'LB.03')->value('id');
         $id_lb_4 = DB::table('klasifikasis')->where('kode', 'LB.04')->value('id');
-        $id_lb_5 = DB::table('klasifikasis')->where('kode', 'LB.05')->value('id');
-        $id_lb_5_2 = DB::table('klasifikasis')->where('kode', 'LB.05_2')->value('id');
+        $id_lb_5 = DB::table('klasifikasis')->where('kode', 'LB.05')->where('nama', 'Penelitian dan Pengembangan Teknologi Tepat Guna.')->value('id');
+        $id_lb_5_2 = DB::table('klasifikasis')->where('kode', 'LB.05')->where('nama', 'Kerjasama Penelitian dan Pengembangan.')->value('id');
         $id_lb_6 = DB::table('klasifikasis')->where('kode', 'LB.06')->value('id');
         $id_lb_7 = DB::table('klasifikasis')->where('kode', 'LB.07')->value('id');
         $id_lb_8 = DB::table('klasifikasis')->where('kode', 'LB.08')->value('id');
@@ -475,16 +470,16 @@ return new class extends Migration
             ['parent_id' => $id_lb_4, 'kode' => 'LB.04.01', 'nama' => 'Kegiatan Penelitian dan Pengembangan Bidang Ilmu Pengetahuan dan Teknologi.', 'sifat' => 'B'],
             ['parent_id' => $id_lb_4, 'kode' => 'LB.04.02', 'nama' => 'Laporan Hasil Penelitian dan Pengembangan Bidang Ilmu Pengetahuan dan Teknologi.', 'sifat' => 'B'],
 
-            // --- Anak dari LB.05 ---
+            // --- Anak dari LB.05 (Teknologi Tepat Guna) ---
             ['parent_id' => $id_lb_5, 'kode' => 'LB.05.01', 'nama' => 'Kegiatan Penelitian dan Pengembangan Teknologi Tepat Guna.', 'sifat' => 'B'],
             ['parent_id' => $id_lb_5, 'kode' => 'LB.05.02', 'nama' => 'Laporan Hasil Penelitian dan Pengembangan Teknologi Tepat Guna.', 'sifat' => 'B'],
             ['parent_id' => $id_lb_5, 'kode' => 'LB.05.03', 'nama' => 'Pemasyarakatan Hasil Penelitian dan Pengembangan Teknologi Tepat Guna.', 'sifat' => 'B'],
 
-            // --- Anak dari LB.05_2 ---
-            ['parent_id' => $id_lb_5_2, 'kode' => 'LB.05_2.01', 'nama' => 'Kerjasama Penelitian dan Pengembangan Antar Pemerintah Daerah.', 'sifat' => 'B'],
-            ['parent_id' => $id_lb_5_2, 'kode' => 'LB.05_2.02', 'nama' => 'Kerjasama Penelitian dan Pengembangan Dengan Peguruan Tinggi.', 'sifat' => 'B'],
-            ['parent_id' => $id_lb_5_2, 'kode' => 'LB.05_2.03', 'nama' => 'Kerjasama Penelitian dan Pengembangan dengan Swasta dan Masyarakat.', 'sifat' => 'B'],
-            ['parent_id' => $id_lb_5_2, 'kode' => 'LB.05_2.04', 'nama' => 'Dewan Research Daerah.', 'sifat' => 'B'],
+            // --- Anak dari LB.05 (Kerjasama) ---
+            ['parent_id' => $id_lb_5_2, 'kode' => 'LB.05.01', 'nama' => 'Kerjasama Penelitian dan Pengembangan Antar Pemerintah Daerah.', 'sifat' => 'B'],
+            ['parent_id' => $id_lb_5_2, 'kode' => 'LB.05.02', 'nama' => 'Kerjasama Penelitian dan Pengembangan Dengan Peguruan Tinggi.', 'sifat' => 'B'],
+            ['parent_id' => $id_lb_5_2, 'kode' => 'LB.05.03', 'nama' => 'Kerjasama Penelitian dan Pengembangan dengan Swasta dan Masyarakat.', 'sifat' => 'B'],
+            ['parent_id' => $id_lb_5_2, 'kode' => 'LB.05.04', 'nama' => 'Dewan Research Daerah.', 'sifat' => 'B'],
 
             // --- Anak dari LB.06 ---
             ['parent_id' => $id_lb_6, 'kode' => 'LB.06.01', 'nama' => 'Data Base Hasil Penelitian dan Pengembangan.', 'sifat' => 'B'],
@@ -511,11 +506,10 @@ return new class extends Migration
             ['parent_id' => $id_pw, 'kode' => 'PW.03', 'nama' => 'Pengawasan Khusus.', 'sifat' => 'B'],
             ['parent_id' => $id_pw, 'kode' => 'PW.04', 'nama' => 'Pengaduan Masyarakat.', 'sifat' => 'B'],
             
-            // AKAL-AKALAN DATABASE: Typo dokumen, angka 04 dipakai dua kali
-            ['parent_id' => $id_pw, 'kode' => 'PW.04_2', 'nama' => 'Pengawasan Melekat.', 'sifat' => 'B'],
+            ['parent_id' => $id_pw, 'kode' => 'PW.04', 'nama' => 'Pengawasan Melekat.', 'sifat' => 'B'],
             
             ['parent_id' => $id_pw, 'kode' => 'PW.05', 'nama' => 'Pemantauan.', 'sifat' => 'B'],
-            ['parent_id' => $id_pw, 'kode' => 'PW.06', 'nama' => 'Pemantauan (Lanjutan).', 'sifat' => 'B'], // Merapikan format '06 01' di dokumen
+            ['parent_id' => $id_pw, 'kode' => 'PW.06', 'nama' => 'Pemantauan (Lanjutan).', 'sifat' => 'B'], 
             ['parent_id' => $id_pw, 'kode' => 'PW.07', 'nama' => 'Sumberdaya Manusia Pengawasan (Auditor).', 'sifat' => 'B'],
             ['parent_id' => $id_pw, 'kode' => 'PW.08', 'nama' => 'Pengembangan Akuntabilitas Publik.', 'sifat' => 'B'],
         ]);
@@ -524,8 +518,8 @@ return new class extends Migration
         $id_pw_1 = DB::table('klasifikasis')->where('kode', 'PW.01')->value('id');
         $id_pw_2 = DB::table('klasifikasis')->where('kode', 'PW.02')->value('id');
         $id_pw_3 = DB::table('klasifikasis')->where('kode', 'PW.03')->value('id');
-        $id_pw_4 = DB::table('klasifikasis')->where('kode', 'PW.04')->value('id');
-        $id_pw_4_2 = DB::table('klasifikasis')->where('kode', 'PW.04_2')->value('id');
+        $id_pw_4 = DB::table('klasifikasis')->where('kode', 'PW.04')->where('nama', 'Pengaduan Masyarakat.')->value('id');
+        $id_pw_4_2 = DB::table('klasifikasis')->where('kode', 'PW.04')->where('nama', 'Pengawasan Melekat.')->value('id');
         $id_pw_6 = DB::table('klasifikasis')->where('kode', 'PW.06')->value('id');
         $id_pw_7 = DB::table('klasifikasis')->where('kode', 'PW.07')->value('id');
         $id_pw_8 = DB::table('klasifikasis')->where('kode', 'PW.08')->value('id');
@@ -550,10 +544,10 @@ return new class extends Migration
             ['parent_id' => $id_pw_4, 'kode' => 'PW.04.02', 'nama' => 'Penanganan/Tindak Lanjut Atas Pengaduan Masyarakat.', 'sifat' => 'B'],
             ['parent_id' => $id_pw_4, 'kode' => 'PW.04.03', 'nama' => 'Evaluasi Penanganan/Tindak Lanjut.', 'sifat' => 'B'],
 
-            // --- Anak dari PW.04_2 (Pengawasan Melekat) ---
-            ['parent_id' => $id_pw_4_2, 'kode' => 'PW.04_2.01', 'nama' => 'Sosialisasi.', 'sifat' => 'B'],
-            ['parent_id' => $id_pw_4_2, 'kode' => 'PW.04_2.02', 'nama' => 'Kegiatan Pengawasan Melekat.', 'sifat' => 'B'],
-            ['parent_id' => $id_pw_4_2, 'kode' => 'PW.04_2.03', 'nama' => 'Evaluasi Kegiatan Pengawasan Melekat.', 'sifat' => 'B'],
+            // --- Anak dari PW.04 (Pengawasan Melekat) ---
+            ['parent_id' => $id_pw_4_2, 'kode' => 'PW.04.01', 'nama' => 'Sosialisasi.', 'sifat' => 'B'],
+            ['parent_id' => $id_pw_4_2, 'kode' => 'PW.04.02', 'nama' => 'Kegiatan Pengawasan Melekat.', 'sifat' => 'B'],
+            ['parent_id' => $id_pw_4_2, 'kode' => 'PW.04.03', 'nama' => 'Evaluasi Kegiatan Pengawasan Melekat.', 'sifat' => 'B'],
 
             // --- Anak dari PW.06 ---
             ['parent_id' => $id_pw_6, 'kode' => 'PW.06.01', 'nama' => 'Pemantauan Pelaksanaan Kegiatan/Program.', 'sifat' => 'B'],
@@ -625,8 +619,8 @@ return new class extends Migration
             ['parent_id' => $id_kpg_2, 'kode' => 'KPG.02.02', 'nama' => 'Penetapan Pengumuman Kelulusan', 'sifat' => 'B'],
             ['parent_id' => $id_kpg_2, 'kode' => 'KPG.02.03', 'nama' => 'Berkas Lamaran yang tidak diterima', 'sifat' => 'B'],
             ['parent_id' => $id_kpg_2, 'kode' => 'KPG.02.04', 'nama' => 'Nota Usul dan Kelengkapan Penetapan NIP', 'sifat' => 'B'],
-            ['parent_id' => $id_kpg_2, 'kode' => 'KPG.02.05', 'nama' => 'Nota Usul Pengangkatan CPNS menjadi PNS lebih dari 2 tahun', 'sifat' => 'B'], // Unnumbered
-            ['parent_id' => $id_kpg_2, 'kode' => 'KPG.02.06', 'nama' => 'SK CPNS/PNS Kolektif', 'sifat' => 'B'], // Unnumbered
+            ['parent_id' => $id_kpg_2, 'kode' => 'KPG.02.05', 'nama' => 'Nota Usul Pengangkatan CPNS menjadi PNS lebih dari 2 tahun', 'sifat' => 'B'], 
+            ['parent_id' => $id_kpg_2, 'kode' => 'KPG.02.06', 'nama' => 'SK CPNS/PNS Kolektif', 'sifat' => 'B'], 
 
             // Anak KPG.03
             ['parent_id' => $id_kpg_3, 'kode' => 'KPG.03.01', 'nama' => 'Diklat/Kursus/Magang/Tugas Belajar/Ujian Dinas/Ijin Belajar Pegawai:', 'sifat' => 'B'],
@@ -797,7 +791,7 @@ return new class extends Migration
             ['parent_id' => $id_ku, 'kode' => 'KU.14', 'nama' => 'Penyaluran Anggaran Tugas Pembantuan', 'sifat' => 'B'],
             ['parent_id' => $id_ku, 'kode' => 'KU.15', 'nama' => 'Penerimaan Anggaran Tugas Pembantuan', 'sifat' => 'B'],
             ['parent_id' => $id_ku, 'kode' => 'KU.16', 'nama' => 'Pengelolaan Anggaran Pemilu', 'sifat' => 'B'],
-            ['parent_id' => $id_ku, 'kode' => 'KU.12_2', 'nama' => 'Pemeriksaan/Pengawasan Keuangan Daerah', 'sifat' => 'B'], // Typo dokumen, kembali ke angka 12
+            ['parent_id' => $id_ku, 'kode' => 'KU.12', 'nama' => 'Pemeriksaan/Pengawasan Keuangan Daerah', 'sifat' => 'B'], 
         ]);
 
         $ku_1 = DB::table('klasifikasis')->where('kode', 'KU.01')->value('id');
@@ -808,12 +802,12 @@ return new class extends Migration
         $ku_6 = DB::table('klasifikasis')->where('kode', 'KU.06')->value('id');
         $ku_10 = DB::table('klasifikasis')->where('kode', 'KU.10')->value('id');
         $ku_11 = DB::table('klasifikasis')->where('kode', 'KU.11')->value('id');
-        $ku_12 = DB::table('klasifikasis')->where('kode', 'KU.12')->value('id');
+        $ku_12 = DB::table('klasifikasis')->where('kode', 'KU.12')->where('nama', 'Pengelolaan APBD/Dana Pinjaman/Hibah Luar Negeri (PHLN).')->value('id');
         $ku_13 = DB::table('klasifikasis')->where('kode', 'KU.13')->value('id');
         $ku_14 = DB::table('klasifikasis')->where('kode', 'KU.14')->value('id');
         $ku_15 = DB::table('klasifikasis')->where('kode', 'KU.15')->value('id');
         $ku_16 = DB::table('klasifikasis')->where('kode', 'KU.16')->value('id');
-        $ku_12_2 = DB::table('klasifikasis')->where('kode', 'KU.12_2')->value('id');
+        $ku_12_2 = DB::table('klasifikasis')->where('kode', 'KU.12')->where('nama', 'Pemeriksaan/Pengawasan Keuangan Daerah')->value('id');
 
         // --- LEVEL CUCU (Level 3) ---
         DB::table('klasifikasis')->insertOrIgnore([
@@ -915,10 +909,10 @@ return new class extends Migration
             ['parent_id' => $ku_16, 'kode' => 'KU.16.11', 'nama' => 'Pelaksanaan Anggaran Operasional Pemilu', 'sifat' => 'B'],
 
             // Anak KU.12_2 (Pemeriksaan)
-            ['parent_id' => $ku_12_2, 'kode' => 'KU.12_2.01', 'nama' => 'Laporan Hasil Pemeriksaan Badan Pemeriksa Keuangan Republik Indonesia atas Laporan Keuangan.', 'sifat' => 'B'],
-            ['parent_id' => $ku_12_2, 'kode' => 'KU.12_2.02', 'nama' => 'Hasil Pengawasan dan Pemeriksaan Internal.', 'sifat' => 'B'],
-            ['parent_id' => $ku_12_2, 'kode' => 'KU.12_2.03', 'nama' => 'Laporan Aparat Pemeriksa Fungsional', 'sifat' => 'B'],
-            ['parent_id' => $ku_12_2, 'kode' => 'KU.12_2.04', 'nama' => 'Dokumen Penyelesaian Kerugian Daerah', 'sifat' => 'B'],
+            ['parent_id' => $ku_12_2, 'kode' => 'KU.12.01', 'nama' => 'Laporan Hasil Pemeriksaan Badan Pemeriksa Keuangan Republik Indonesia atas Laporan Keuangan.', 'sifat' => 'B'],
+            ['parent_id' => $ku_12_2, 'kode' => 'KU.12.02', 'nama' => 'Hasil Pengawasan dan Pemeriksaan Internal.', 'sifat' => 'B'],
+            ['parent_id' => $ku_12_2, 'kode' => 'KU.12.03', 'nama' => 'Laporan Aparat Pemeriksa Fungsional', 'sifat' => 'B'],
+            ['parent_id' => $ku_12_2, 'kode' => 'KU.12.04', 'nama' => 'Dokumen Penyelesaian Kerugian Daerah', 'sifat' => 'B'],
         ]);
 
         $ku_1_1 = DB::table('klasifikasis')->where('kode', 'KU.01.01')->value('id');
@@ -950,8 +944,8 @@ return new class extends Migration
         $ku_16_10 = DB::table('klasifikasis')->where('kode', 'KU.16.10')->value('id');
         $ku_16_11 = DB::table('klasifikasis')->where('kode', 'KU.16.11')->value('id');
         
-        $ku_12_2_3 = DB::table('klasifikasis')->where('kode', 'KU.12_2.03')->value('id');
-        $ku_12_2_4 = DB::table('klasifikasis')->where('kode', 'KU.12_2.04')->value('id');
+        $ku_12_2_3 = DB::table('klasifikasis')->where('kode', 'KU.12.03')->value('id');
+        $ku_12_2_4 = DB::table('klasifikasis')->where('kode', 'KU.12.04')->value('id');
 
         // --- LEVEL CICIT (Level 4) ---
         DB::table('klasifikasis')->insertOrIgnore([
@@ -1120,13 +1114,13 @@ return new class extends Migration
             ['parent_id' => $ku_16_11, 'kode' => 'KU.16.11.03', 'nama' => 'Berkas Penyaluran Biaya Pemilu ke PPK, PPS dan KPPS termasuk diantaranya Bukti Transfer Bank.', 'sifat' => 'B'],
 
             // Bawah KU.12_2.03
-            ['parent_id' => $ku_12_2_3, 'kode' => 'KU.12_2.03.01', 'nama' => 'LHP (Laporan Hasil Pemeriksaan).', 'sifat' => 'B'],
-            ['parent_id' => $ku_12_2_3, 'kode' => 'KU.12_2.03.02', 'nama' => 'MHP (Memorandum Hasil Pemeriksaan).', 'sifat' => 'B'],
-            ['parent_id' => $ku_12_2_3, 'kode' => 'KU.12_2.03.03', 'nama' => 'Tindak Lanjut/ Tanggapan LHP.', 'sifat' => 'B'],
+            ['parent_id' => $ku_12_2_3, 'kode' => 'KU.12.03.01', 'nama' => 'LHP (Laporan Hasil Pemeriksaan).', 'sifat' => 'B'],
+            ['parent_id' => $ku_12_2_3, 'kode' => 'KU.12.03.02', 'nama' => 'MHP (Memorandum Hasil Pemeriksaan).', 'sifat' => 'B'],
+            ['parent_id' => $ku_12_2_3, 'kode' => 'KU.12.03.03', 'nama' => 'Tindak Lanjut/ Tanggapan LHP.', 'sifat' => 'B'],
 
             // Bawah KU.12_2.04
-            ['parent_id' => $ku_12_2_4, 'kode' => 'KU.12_2.04.01', 'nama' => 'Tuntutan Perbendaharaan.', 'sifat' => 'B'],
-            ['parent_id' => $ku_12_2_4, 'kode' => 'KU.12_2.04.02', 'nama' => 'Tuntutan Ganti Rugi.', 'sifat' => 'B'],
+            ['parent_id' => $ku_12_2_4, 'kode' => 'KU.12.04.01', 'nama' => 'Tuntutan Perbendaharaan.', 'sifat' => 'B'],
+            ['parent_id' => $ku_12_2_4, 'kode' => 'KU.12.04.02', 'nama' => 'Tuntutan Ganti Rugi.', 'sifat' => 'B'],
         ]);
         // ==============================================================================
         // RINCIAN URUSAN FASILITATIF: AR (Kearsipan)
@@ -1140,7 +1134,7 @@ return new class extends Migration
             ['parent_id' => $id_ar, 'kode' => 'AR.03', 'nama' => 'Pengelolaan Arsip Dinamis', 'sifat' => 'B'],
             ['parent_id' => $id_ar, 'kode' => 'AR.04', 'nama' => 'Pengelolaan Arsip Statis', 'sifat' => 'B'],
             ['parent_id' => $id_ar, 'kode' => 'AR.05', 'nama' => 'Jasa Kearsipan', 'sifat' => 'B'],
-            ['parent_id' => $id_ar, 'kode' => 'AR.07', 'nama' => 'Pembinaan Dan Pengawasan Kearsipan', 'sifat' => 'B'], // Loncat dari 05 ke 07
+            ['parent_id' => $id_ar, 'kode' => 'AR.07', 'nama' => 'Pembinaan Dan Pengawasan Kearsipan', 'sifat' => 'B'], 
         ]);
 
         $ar_1 = DB::table('klasifikasis')->where('kode', 'AR.01')->value('id');
@@ -1180,7 +1174,7 @@ return new class extends Migration
             ['parent_id' => $ar_3, 'kode' => 'AR.03.05', 'nama' => 'Alih Media', 'sifat' => 'B'],
             ['parent_id' => $ar_3, 'kode' => 'AR.03.06', 'nama' => 'Program Arsip vital', 'sifat' => 'B'],
             ['parent_id' => $ar_3, 'kode' => 'AR.03.07', 'nama' => 'Autentikasi Arsip Dinamis', 'sifat' => 'B'],
-            ['parent_id' => $ar_3, 'kode' => 'AR.03.09', 'nama' => 'Penyusutan', 'sifat' => 'B'], // Loncat dari 07 ke 09
+            ['parent_id' => $ar_3, 'kode' => 'AR.03.09', 'nama' => 'Penyusutan', 'sifat' => 'B'], 
             ['parent_id' => $ar_3, 'kode' => 'AR.03.10', 'nama' => 'Data Base Pengelolaan Arsip Dinamis', 'sifat' => 'B'],
 
             // Bawah AR.04
@@ -1210,8 +1204,6 @@ return new class extends Migration
             ['parent_id' => $ar_7, 'kode' => 'AR.07.04', 'nama' => 'Pengawasan Eksternal', 'sifat' => 'B'],
         ]);
 
-        // Mengambil ID untuk memasukkan Level Cicit (Level 4)
-        // (Hanya ambil yang punya sub-level di dokumen)
         $ar_1_1 = DB::table('klasifikasis')->where('kode', 'AR.01.01')->value('id');
         $ar_1_2 = DB::table('klasifikasis')->where('kode', 'AR.01.02')->value('id');
         $ar_1_3 = DB::table('klasifikasis')->where('kode', 'AR.01.03')->value('id');
@@ -1391,7 +1383,7 @@ return new class extends Migration
             ['parent_id' => $ar_4_9, 'kode' => 'AR.04.09.01', 'nama' => 'Layanan Arsip.', 'sifat' => 'B'],
             ['parent_id' => $ar_4_9, 'kode' => 'AR.04.09.02', 'nama' => 'Administrasi dan proses penyusunan Penerbitan Naskah Sumber.', 'sifat' => 'B'],
             ['parent_id' => $ar_4_9, 'kode' => 'AR.04.09.03', 'nama' => 'hasil naskah sumber arsip.', 'sifat' => 'B'],
-            ['parent_id' => $ar_4_9, 'kode' => 'AR.04.09.03_2', 'nama' => 'Pameran arsip.', 'sifat' => 'B'], // Akal-akalan karena nomor 03 kembar
+            ['parent_id' => $ar_4_9, 'kode' => 'AR.04.09.03', 'nama' => 'Pameran arsip.', 'sifat' => 'B'], 
 
             // Bawah AR.07.01
             ['parent_id' => $ar_7_1, 'kode' => 'AR.07.01.01', 'nama' => 'Kegiatan pembinaan terhadap Perangkat Daerah.', 'sifat' => 'B'],
@@ -1409,11 +1401,10 @@ return new class extends Migration
 
         // Mengambil ID untuk memasukkan Level 5 (Anak dari Strip "-")
         $ar_3_9_2 = DB::table('klasifikasis')->where('kode', 'AR.03.09.02')->value('id');
-        $ar_3_9_3 = DB::table('klasifikasis')->where('kode', 'AR.03.09.03')->value('id');
+        $ar_3_9_3 = DB::table('klasifikasis')->where('kode', 'AR.03.09.03')->where('nama', 'Penyerahan arsip statis')->value('id');
         $ar_4_2_2 = DB::table('klasifikasis')->where('kode', 'AR.04.02.02')->value('id');
 
         // --- LEVEL CICIT KE-2 / LEVEL 5 ---
-        // Karena di dokumen aslinya pakai strip (-), ini gue buatin penomoran otomatis .01, .02 dst biar database nggak error.
         DB::table('klasifikasis')->insertOrIgnore([
             // Anak dari AR.03.09.02 (Pemusnahan arsip)
             ['parent_id' => $ar_3_9_2, 'kode' => 'AR.03.09.02.01', 'nama' => 'Panitia penilai.', 'sifat' => 'B'],
