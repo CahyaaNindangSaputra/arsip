@@ -216,10 +216,10 @@ class ArsipController extends Controller
             $query->where('user_id', auth()->id());
         }
 
-        $arsips = $query->latest()->get();
+        $arsipMusnah= $query->latest()->get();
         
         // Lempar ke master tabel
-        return view('arsip.index', compact('arsips'));
+        return view('arsip.pemusnahan', compact('arsipMusnah'));
     }
     public function serah(Request $request)
     {

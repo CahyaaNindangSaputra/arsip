@@ -3,7 +3,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto px-6">
             <div class="mb-4">
-                <p class="font-bold">Nama Pencipta Arsip : ..............................</p>
+                <div class="boreder ">
             </div>
             <div class="overflow-x-auto bg-white shadow-sm rounded-lg p-6">
                 <table class="w-full border-collapse border border-gray-800 text-xs text-center">
