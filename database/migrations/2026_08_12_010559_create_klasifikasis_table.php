@@ -7084,6 +7084,685 @@ return new class extends Migration
             ['parent_id' => $kk_4_05, 'kode' => 'KK.04.05.05', 'nama' => 'Dokumentasi dan Perpustakaan.', 'sifat' => 'B'],
             ['parent_id' => $kk_4_05, 'kode' => 'KK.04.05.06', 'nama' => 'Pengelolaan situs BKKBN dan Media konferensi.', 'sifat' => 'B'],
         ]);
+        // ==============================================================================
+        // RINCIAN URUSAN SUBTANTIF: PA (Pemberdayaan Perempuan dan Perlindungan Anak)
+        // ==============================================================================
+        $id_pa = DB::table('klasifikasis')->where('kode', 'PA')->value('id') ?? DB::table('klasifikasis')->insertGetId(['kode' => 'PA', 'nama' => 'Pemberdayaan Perempuan dan Perlindungan Anak:', 'sifat' => 'B']);
+
+        // --- LEVEL ANAK (Level 2) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            ['parent_id' => $id_pa, 'kode' => 'PA.01', 'nama' => 'Pengarusutamaan Gender (PUG):', 'sifat' => 'B'],
+            ['parent_id' => $id_pa, 'kode' => 'PA.02', 'nama' => 'Perlindungan Hak Perempuan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pa, 'kode' => 'PA.03', 'nama' => 'Perlindungan Anak:', 'sifat' => 'B'],
+            ['parent_id' => $id_pa, 'kode' => 'PA.04', 'nama' => 'Partisipasi Masyarakat:', 'sifat' => 'B'],
+            ['parent_id' => $id_pa, 'kode' => 'PA.05', 'nama' => 'Kajian Tentang Pemberdayaan Perempuan dan Perlindungan Anak:', 'sifat' => 'B'],
+        ]);
+
+        $pa_1 = DB::table('klasifikasis')->where('kode', 'PA.01')->value('id');
+        $pa_2 = DB::table('klasifikasis')->where('kode', 'PA.02')->value('id');
+        $pa_3 = DB::table('klasifikasis')->where('kode', 'PA.03')->value('id');
+        $pa_4 = DB::table('klasifikasis')->where('kode', 'PA.04')->value('id');
+        $pa_5 = DB::table('klasifikasis')->where('kode', 'PA.05')->value('id');
+
+        // --- LEVEL CUCU (Level 3) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            // Bawah PA.01
+            ['parent_id' => $pa_1, 'kode' => 'PA.01.01', 'nama' => 'Penyiapan, Perumusan dan Penyusunan Kebijakan PUG.', 'sifat' => 'B'],
+            ['parent_id' => $pa_1, 'kode' => 'PA.01.02', 'nama' => 'Data Gender.', 'sifat' => 'B'],
+            ['parent_id' => $pa_1, 'kode' => 'PA.01.03', 'nama' => 'Sosialisasi Kebijakan PUG.', 'sifat' => 'B'],
+            ['parent_id' => $pa_1, 'kode' => 'PA.01.04', 'nama' => 'Advokasi Pelaksanaan PUG.', 'sifat' => 'B'],
+            ['parent_id' => $pa_1, 'kode' => 'PA.01.05', 'nama' => 'Fasilitasi dan Koordinasi PUG.', 'sifat' => 'B'],
+            ['parent_id' => $pa_1, 'kode' => 'PA.01.06', 'nama' => 'Monitoring , Evaluasi dan Analisa Kebijakan PUG.', 'sifat' => 'B'],
+
+            // Bawah PA.02
+            ['parent_id' => $pa_2, 'kode' => 'PA.02.01', 'nama' => 'Penyiapan, Perumusan dan Penyusunan Kebijakan Bidang Perlindungan Hak Perempuan.', 'sifat' => 'B'],
+            ['parent_id' => $pa_2, 'kode' => 'PA.02.02', 'nama' => 'Sosialisasi Kebijakan Bidang Perlindungan Hak Perempuan.', 'sifat' => 'B'],
+            ['parent_id' => $pa_2, 'kode' => 'PA.02.03', 'nama' => 'Data Perlindungan Perempuan.', 'sifat' => 'B'],
+            ['parent_id' => $pa_2, 'kode' => 'PA.02.03', 'nama' => 'Penanganan Kekerasan Terhadap Perempuan.', 'sifat' => 'B'], // Duplikat nomor 03 asli
+            ['parent_id' => $pa_2, 'kode' => 'PA.02.04', 'nama' => 'Penanganan Perempuan dalam Situasi Darurat dan Kondisi Khusus.', 'sifat' => 'B'],
+            ['parent_id' => $pa_2, 'kode' => 'PA.02.04', 'nama' => 'Perlindungan Tenaga Kerja Perempuan.', 'sifat' => 'B'], // Duplikat nomor 04 asli
+            ['parent_id' => $pa_2, 'kode' => 'PA.02.05', 'nama' => 'Advokasi Perlindungan Perempuan:', 'sifat' => 'B'],
+            ['parent_id' => $pa_2, 'kode' => 'PA.02.06', 'nama' => 'Fasilitasi dan Koordinasi Bidang Perlindungan Hak Perempuan:', 'sifat' => 'B'],
+            ['parent_id' => $pa_2, 'kode' => 'PA.02.07', 'nama' => 'Sistem Aplikasi dan Jaringan Informasi Gender.', 'sifat' => 'B'],
+            ['parent_id' => $pa_2, 'kode' => 'PA.02.08', 'nama' => 'Analisis dan penyajian informasi gender.', 'sifat' => 'B'],
+
+            // Bawah PA.03
+            ['parent_id' => $pa_3, 'kode' => 'PA.03.01', 'nama' => 'Penyusunan Kebijakan Perlindungan Anak (PA) dan Tumbuh Kembang Anak (TKA):', 'sifat' => 'B'],
+            ['parent_id' => $pa_3, 'kode' => 'PA.03.02', 'nama' => 'Sosialisasi Kebijakan Bidang Perlindungan Anak (PA) dan Tumbuh Kembang Anak (TKA).', 'sifat' => 'B'],
+            ['parent_id' => $pa_3, 'kode' => 'PA.03.03', 'nama' => 'Advokasi Perlindungan Anak (PA) dan Tumbuh Kembang:', 'sifat' => 'B'],
+            ['parent_id' => $pa_3, 'kode' => 'PA.03.04', 'nama' => 'Fasilitasi dan Koordinasi Bidang Perlindungan Anak (PA) dan Tumbuh Kembang Anak (TKA):', 'sifat' => 'B'],
+            ['parent_id' => $pa_3, 'kode' => 'PA.03.05', 'nama' => 'Monitoring dan Evaluasi Bidang Perlindungan Anak (PA) dan Tumbuh Kembang Anak (TKA):', 'sifat' => 'B'],
+            ['parent_id' => $pa_3, 'kode' => 'PA.03.06', 'nama' => 'Pemetaan Perlindungan Anak (PA) dan Tumbuh Kembang Anak (TKA):', 'sifat' => 'B'],
+
+            // Bawah PA.04
+            ['parent_id' => $pa_4, 'kode' => 'PA.04.01', 'nama' => 'Penyusunan Kebijakan Bidang Partisipasi Masyarakat.', 'sifat' => 'B'],
+            ['parent_id' => $pa_4, 'kode' => 'PA.04.02', 'nama' => 'Sosialisasi Kebijakan Bidang Partisipasi Masyarakat.', 'sifat' => 'B'],
+            ['parent_id' => $pa_4, 'kode' => 'PA.04.03', 'nama' => 'Advokasi Bidang Partisipasi Masyarakat.', 'sifat' => 'B'],
+            ['parent_id' => $pa_4, 'kode' => 'PA.04.04', 'nama' => 'Fasilitasi dan Koordinasi Bidang Partisipasi Masyarakat.', 'sifat' => 'B'],
+            ['parent_id' => $pa_4, 'kode' => 'PA.04.05', 'nama' => 'Monitoring dan Evaluasi Bidang Partisipasi Masyarakat.', 'sifat' => 'B'],
+
+            // Bawah PA.05
+            ['parent_id' => $pa_5, 'kode' => 'PA.05.01', 'nama' => 'Telaah dan Kajian:', 'sifat' => 'B'],
+            ['parent_id' => $pa_5, 'kode' => 'PA.05.02', 'nama' => 'Forum Analisis Kebijakan dan Pemantauan.', 'sifat' => 'B'],
+        ]);
+
+        // Mengambil ID untuk memasukkan Level Cicit (Level 4)
+        $pa_2_5 = DB::table('klasifikasis')->where('kode', 'PA.02.05')->value('id');
+        $pa_2_6 = DB::table('klasifikasis')->where('kode', 'PA.02.06')->value('id');
+
+        $pa_3_1 = DB::table('klasifikasis')->where('kode', 'PA.03.01')->value('id');
+        $pa_3_2 = DB::table('klasifikasis')->where('kode', 'PA.03.02')->value('id');
+        $pa_3_3 = DB::table('klasifikasis')->where('kode', 'PA.03.03')->value('id');
+        $pa_3_4 = DB::table('klasifikasis')->where('kode', 'PA.03.04')->value('id');
+        $pa_3_5 = DB::table('klasifikasis')->where('kode', 'PA.03.05')->value('id');
+        $pa_3_6 = DB::table('klasifikasis')->where('kode', 'PA.03.06')->value('id');
+
+        $pa_5_1 = DB::table('klasifikasis')->where('kode', 'PA.05.01')->value('id');
+
+        // --- LEVEL CICIT (Level 4) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            // Bawah PA.02.05
+            ['parent_id' => $pa_2_5, 'kode' => 'PA.02.05.01', 'nama' => 'Advokasi Penanganan Kekerasan Terhadap Perempuan.', 'sifat' => 'B'],
+            ['parent_id' => $pa_2_5, 'kode' => 'PA.02.05.02', 'nama' => 'Advokasi Penanganan Masalah Sosial Perempuan.', 'sifat' => 'B'],
+            ['parent_id' => $pa_2_5, 'kode' => 'PA.02.05.03', 'nama' => 'Advokasi Perlindungan Tenaga Kerja Perempuan.', 'sifat' => 'B'],
+
+            // Bawah PA.02.06
+            ['parent_id' => $pa_2_6, 'kode' => 'PA.02.06.01', 'nama' => 'Pemantauan dan Evaluasi Bidang Perlindungan Hak Perempuan.', 'sifat' => 'B'],
+
+            // Bawah PA.03.01
+            ['parent_id' => $pa_3_1, 'kode' => 'PA.03.01.01', 'nama' => 'Penyiapan, Perumusan dan Penyusunan Kebijakan Perlindungan Anak.', 'sifat' => 'B'],
+            ['parent_id' => $pa_3_1, 'kode' => 'PA.03.01.02', 'nama' => 'Penyiapan, Perumusan dan Penyusunan Kebijakan Tumbuh Kembang Anak.', 'sifat' => 'B'],
+            ['parent_id' => $pa_3_1, 'kode' => 'PA.03.01.03', 'nama' => 'Data Perlindungan Anak.', 'sifat' => 'B'],
+            ['parent_id' => $pa_3_1, 'kode' => 'PA.03.01.04', 'nama' => 'Data Tumbuh Kembang Anak.', 'sifat' => 'B'],
+
+            // Bawah PA.03.02
+            ['parent_id' => $pa_3_2, 'kode' => 'PA.03.02.01', 'nama' => 'Sosialisasi Kebijakan PA.', 'sifat' => 'B'],
+            ['parent_id' => $pa_3_2, 'kode' => 'PA.03.02.02', 'nama' => 'Sosialisasi Kebijakan TKA.', 'sifat' => 'B'],
+
+            // Bawah PA.03.03
+            ['parent_id' => $pa_3_3, 'kode' => 'PA.03.03.01', 'nama' => 'Advokasi PA.', 'sifat' => 'B'],
+            ['parent_id' => $pa_3_3, 'kode' => 'PA.03.03.02', 'nama' => 'Advokasi TKA.', 'sifat' => 'B'],
+
+            // Bawah PA.03.04
+            ['parent_id' => $pa_3_4, 'kode' => 'PA.03.04.01', 'nama' => 'Fasilitasi dan koordinasi Bidang Perlindungan Anak.', 'sifat' => 'B'],
+            ['parent_id' => $pa_3_4, 'kode' => 'PA.03.04.02', 'nama' => 'Fasilitasi dan koordinasi Bidang Tumbuh Kembang Anak.', 'sifat' => 'B'],
+
+            // Bawah PA.03.05
+            ['parent_id' => $pa_3_5, 'kode' => 'PA.03.05.01', 'nama' => 'Monev Bidang Perlindungan Anak.', 'sifat' => 'B'],
+            ['parent_id' => $pa_3_5, 'kode' => 'PA.03.05.02', 'nama' => 'Monev Bidang Tumbuh Kembang Anak.', 'sifat' => 'B'],
+
+            // Bawah PA.03.06
+            ['parent_id' => $pa_3_6, 'kode' => 'PA.03.06.01', 'nama' => 'Pemetaan Perlindungan Anak.', 'sifat' => 'B'],
+            ['parent_id' => $pa_3_6, 'kode' => 'PA.03.06.02', 'nama' => 'Pemetaan Perlindungan Tumbuh Kembang Anak.', 'sifat' => 'B'],
+
+            // Bawah PA.05.01
+            ['parent_id' => $pa_5_1, 'kode' => 'PA.05.01.01', 'nama' => 'Bidang Pembangunan Keluarga.', 'sifat' => 'B'],
+            ['parent_id' => $pa_5_1, 'kode' => 'PA.05.01.02', 'nama' => 'Bidang Hubungan Antar Lembaga.', 'sifat' => 'B'],
+            ['parent_id' => $pa_5_1, 'kode' => 'PA.05.01.03', 'nama' => 'Bidang Penanggulangan Kemiskinan.', 'sifat' => 'B'],
+            ['parent_id' => $pa_5_1, 'kode' => 'PA.05.01.04', 'nama' => 'Bidang Komunikasi Pembangunan.', 'sifat' => 'B'],
+        ]); 
+        // ==============================================================================
+        // RINCIAN URUSAN SUBTANTIF: PK (Pendidikan)
+        // ==============================================================================
+        $id_pk = DB::table('klasifikasis')->where('kode', 'PK')->value('id') ?? DB::table('klasifikasis')->insertGetId(['kode' => 'PK', 'nama' => 'Pendidikan:', 'sifat' => 'B']);
+
+        // --- LEVEL ANAK (Level 2) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            ['parent_id' => $id_pk, 'kode' => 'PK.01', 'nama' => 'Kebijakan Bersifat Pengaturan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.02', 'nama' => 'Kebijakan Bersifat Penetapan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.03', 'nama' => 'Pembinaan Pendidikan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.04', 'nama' => 'Kebudayaan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.05', 'nama' => 'Kurikulum:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.06', 'nama' => 'Perbukuan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.07', 'nama' => 'Penilaian Pendidikan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.08', 'nama' => 'Pengembangan Dan Pembinaan Bahasa:', 'sifat' => 'B'],
+        ]);
+
+        $pk_1 = DB::table('klasifikasis')->where('kode', 'PK.01')->value('id');
+        $pk_2 = DB::table('klasifikasis')->where('kode', 'PK.02')->value('id');
+        $pk_3 = DB::table('klasifikasis')->where('kode', 'PK.03')->value('id');
+        $pk_4 = DB::table('klasifikasis')->where('kode', 'PK.04')->value('id');
+        $pk_5 = DB::table('klasifikasis')->where('kode', 'PK.05')->value('id');
+        $pk_6 = DB::table('klasifikasis')->where('kode', 'PK.06')->value('id');
+        $pk_7 = DB::table('klasifikasis')->where('kode', 'PK.07')->value('id');
+        $pk_8 = DB::table('klasifikasis')->where('kode', 'PK.08')->value('id');
+
+        // --- LEVEL CUCU (Level 3) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            // Bawah PK.01
+            ['parent_id' => $pk_1, 'kode' => 'PK.01.01', 'nama' => 'Kebijakan Tentang Pendidikan dan Kebudayaan:', 'sifat' => 'B'],
+            ['parent_id' => $pk_1, 'kode' => 'PK.01.02', 'nama' => 'MoU (Memorandum of Understanding).', 'sifat' => 'B'],
+
+            // Bawah PK.02
+            ['parent_id' => $pk_2, 'kode' => 'PK.02.01', 'nama' => 'Kebijakan bersifat penetapan.', 'sifat' => 'B'],
+
+            // Bawah PK.03
+            ['parent_id' => $pk_3, 'kode' => 'PK.03.01', 'nama' => 'Pendidikan anak usia dini, non formal dan informal.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3, 'kode' => 'PK.03.02', 'nama' => 'Pendidikan dasar:', 'sifat' => 'B'],
+            ['parent_id' => $pk_3, 'kode' => 'PK.03.03', 'nama' => 'Pendidikan menengah:', 'sifat' => 'B'],
+            ['parent_id' => $pk_3, 'kode' => 'PK.03.04', 'nama' => 'Pendidikan tinggi:', 'sifat' => 'B'],
+            ['parent_id' => $pk_3, 'kode' => 'PK.03.05', 'nama' => 'Kemahasiswaan:', 'sifat' => 'B'],
+            ['parent_id' => $pk_3, 'kode' => 'PK.03.06', 'nama' => 'Pendidik dan tenaga kependidikan:', 'sifat' => 'B'],
+            ['parent_id' => $pk_3, 'kode' => 'PK.03.07', 'nama' => 'Penelitian:', 'sifat' => 'B'],
+            ['parent_id' => $pk_3, 'kode' => 'PK.03.08', 'nama' => 'Pengabdian masyarakat:', 'sifat' => 'B'],
+            ['parent_id' => $pk_3, 'kode' => 'PK.03.09', 'nama' => 'Tata pamong perguruan tinggi:', 'sifat' => 'B'],
+
+            // Bawah PK.04
+            ['parent_id' => $pk_4, 'kode' => 'PK.04.01', 'nama' => 'Pelestarian cagar budaya dan permuseuman:', 'sifat' => 'B'],
+            ['parent_id' => $pk_4, 'kode' => 'PK.04.02', 'nama' => 'Pembinaan kesenian dan perfilman:', 'sifat' => 'B'],
+            ['parent_id' => $pk_4, 'kode' => 'PK.04.03', 'nama' => 'Pembinaan kepercayaan terhadap Tuhan Yang Maha Esa dan tradisi:', 'sifat' => 'B'],
+            ['parent_id' => $pk_4, 'kode' => 'PK.04.04', 'nama' => 'Sejarah dan nilai budaya:', 'sifat' => 'B'],
+            ['parent_id' => $pk_4, 'kode' => 'PK.04.05', 'nama' => 'Internalisasi nilai dan diplomasi budaya:', 'sifat' => 'B'],
+
+            // Bawah PK.05
+            ['parent_id' => $pk_5, 'kode' => 'PK.05.01', 'nama' => 'Pembinaan kurikulum.', 'sifat' => 'B'],
+            ['parent_id' => $pk_5, 'kode' => 'PK.05.02', 'nama' => 'Hasil evaluasi penyusunan kurikulum.', 'sifat' => 'B'],
+
+            // Bawah PK.06
+            ['parent_id' => $pk_6, 'kode' => 'PK.06.01', 'nama' => 'Penyusunan standar mutu buku.', 'sifat' => 'B'],
+            ['parent_id' => $pk_6, 'kode' => 'PK.06.02', 'nama' => 'Pengumpulan naskah 2 Tahun Musnah.', 'sifat' => 'B'],
+            ['parent_id' => $pk_6, 'kode' => 'PK.06.03', 'nama' => 'Penilaian mutu buku dan pemilihan 2 Tahun Musnah.', 'sifat' => 'B'],
+            ['parent_id' => $pk_6, 'kode' => 'PK.06.04', 'nama' => 'Persetujuan dan pengesahan naskah 2 Tahun Permanen.', 'sifat' => 'B'],
+            ['parent_id' => $pk_6, 'kode' => 'PK.06.05', 'nama' => 'Penerbitan/pencetakan 2 Tahun Musnah.', 'sifat' => 'B'],
+            ['parent_id' => $pk_6, 'kode' => 'PK.06.06', 'nama' => 'Master buku/naskah yang dicetak 2 Tahun Permanen.', 'sifat' => 'B'],
+            ['parent_id' => $pk_6, 'kode' => 'PK.06.07', 'nama' => 'Distribusi buku 2 Tahun Musnah.', 'sifat' => 'B'],
+            ['parent_id' => $pk_6, 'kode' => 'PK.06.08', 'nama' => 'Pengembangan naskah 2 Tahun Musnah.', 'sifat' => 'B'],
+            ['parent_id' => $pk_6, 'kode' => 'PK.06.09', 'nama' => 'Pengkajian buku.', 'sifat' => 'B'],
+
+            // Bawah PK.07
+            ['parent_id' => $pk_7, 'kode' => 'PK.07.01', 'nama' => 'Penilaian akademik.', 'sifat' => 'B'],
+            ['parent_id' => $pk_7, 'kode' => 'PK.07.02', 'nama' => 'Penilaian non akademik.', 'sifat' => 'B'],
+            ['parent_id' => $pk_7, 'kode' => 'PK.07.03', 'nama' => 'Analisis dan sistem informasi penilaian.', 'sifat' => 'B'],
+
+            // Bawah PK.08
+            ['parent_id' => $pk_8, 'kode' => 'PK.08.01', 'nama' => 'Pengembangan dan pelindungan:', 'sifat' => 'B'],
+            ['parent_id' => $pk_8, 'kode' => 'PK.08.02', 'nama' => 'Pembinaan dan pemasyarakatan:', 'sifat' => 'B'],
+            ['parent_id' => $pk_8, 'kode' => 'PK.08.03', 'nama' => 'Pembelajaran:', 'sifat' => 'B'],
+            ['parent_id' => $pk_8, 'kode' => 'PK.08.04', 'nama' => 'Peningkatan dan pengendalian:', 'sifat' => 'B'],
+        ]);
+
+        // Mengambil ID untuk memasukkan Level Cicit (Level 4)
+        $pk_1_1 = DB::table('klasifikasis')->where('kode', 'PK.01.01')->value('id');
+
+        $pk_2_1 = DB::table('klasifikasis')->where('kode', 'PK.02.01')->value('id');
+
+        $pk_3_1 = DB::table('klasifikasis')->where('kode', 'PK.03.01')->value('id');
+        $pk_3_2 = DB::table('klasifikasis')->where('kode', 'PK.03.02')->value('id');
+        $pk_3_3 = DB::table('klasifikasis')->where('kode', 'PK.03.03')->value('id');
+        $pk_3_4 = DB::table('klasifikasis')->where('kode', 'PK.03.04')->value('id');
+        $pk_3_5 = DB::table('klasifikasis')->where('kode', 'PK.03.05')->value('id');
+        $pk_3_6 = DB::table('klasifikasis')->where('kode', 'PK.03.06')->value('id');
+        $pk_3_7 = DB::table('klasifikasis')->where('kode', 'PK.03.07')->value('id');
+        $pk_3_8 = DB::table('klasifikasis')->where('kode', 'PK.03.08')->value('id');
+        $pk_3_9 = DB::table('klasifikasis')->where('kode', 'PK.03.09')->value('id');
+
+        $pk_4_1 = DB::table('klasifikasis')->where('kode', 'PK.04.01')->value('id');
+        $pk_4_2 = DB::table('klasifikasis')->where('kode', 'PK.04.02')->value('id');
+        $pk_4_3 = DB::table('klasifikasis')->where('kode', 'PK.04.03')->value('id');
+        $pk_4_4 = DB::table('klasifikasis')->where('kode', 'PK.04.04')->value('id');
+        $pk_4_5 = DB::table('klasifikasis')->where('kode', 'PK.04.05')->value('id');
+
+        $pk_8_1 = DB::table('klasifikasis')->where('kode', 'PK.08.01')->value('id');
+        $pk_8_2 = DB::table('klasifikasis')->where('kode', 'PK.08.02')->value('id');
+        $pk_8_3 = DB::table('klasifikasis')->where('kode', 'PK.08.03')->value('id');
+        $pk_8_4 = DB::table('klasifikasis')->where('kode', 'PK.08.04')->value('id');
+
+        // --- LEVEL CICIT (Level 4) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            // Bawah PK.01.01
+            ['parent_id' => $pk_1_1, 'kode' => 'PK.01.01.01', 'nama' => 'Pengkajian dan Pengusulan Kebijakan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_1_1, 'kode' => 'PK.01.01.02', 'nama' => 'Penyiapan Bahan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_1_1, 'kode' => 'PK.01.01.03', 'nama' => 'Perumusan Kebijakan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_1_1, 'kode' => 'PK.01.01.04', 'nama' => 'Pemberian masukan dan dukungan dalam penyusunan kebijakan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_1_1, 'kode' => 'PK.01.01.05', 'nama' => 'Penetapan dalam bentuk NSPK.', 'sifat' => 'B'],
+            ['parent_id' => $pk_1_1, 'kode' => 'PK.01.01.06', 'nama' => 'Perumusan dan penerapan standar.', 'sifat' => 'B'],
+
+            // Bawah PK.02.01
+            ['parent_id' => $pk_2_1, 'kode' => 'PK.02.01.01', 'nama' => 'Pengkajian dan Pengusulan Penetapan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_2_1, 'kode' => 'PK.02.01.02', 'nama' => 'Penyiapan bahan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_2_1, 'kode' => 'PK.02.01.03', 'nama' => 'Perumusan penetapan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_2_1, 'kode' => 'PK.02.01.04', 'nama' => 'Pemberian masukan dan dukungan dalam penyusunan penetapan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_2_1, 'kode' => 'PK.02.01.05', 'nama' => 'Penetapan dalam bentuk keputusan.', 'sifat' => 'B'],
+
+            // Bawah PK.03.01
+            ['parent_id' => $pk_3_1, 'kode' => 'PK.03.01.01', 'nama' => 'Paud (Bahan ajar, Pelatihan).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_1, 'kode' => 'PK.03.01.02', 'nama' => 'Paud (Sosialisasi, Peringatan Hari Anak Nasional).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_1, 'kode' => 'PK.03.01.03', 'nama' => 'Paud (Block Grandt).', 'sifat' => 'B'], // Typo asli Grandt
+            ['parent_id' => $pk_3_1, 'kode' => 'PK.03.01.04', 'nama' => 'Pendidikan masyarakat (Penyelenggaraanprogram, pemberian bantuan sosial, pembinaan program, pameran/ publikasi/ sosialisasi).', 'sifat' => 'B'], // Typo asli Penyelenggaraanprogram
+            ['parent_id' => $pk_3_1, 'kode' => 'PK.03.01.05', 'nama' => 'Pendidikan masyarakat (lomba, penghargaan, anugerah dan peringatan hari anak internasional).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_1, 'kode' => 'PK.03.01.06', 'nama' => 'Kursus dan pelatihan (Penyelenggaraan program, pemberian bantuan sosial, pembinaan program, dan standard kursus).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_1, 'kode' => 'PK.03.01.07', 'nama' => 'Lomba lembaga kursus berprestasi, publikasi dan promosi kursus).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_1, 'kode' => 'PK.03.01.08', 'nama' => 'Sertifikasi kursus.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_1, 'kode' => 'PK.03.01.09', 'nama' => 'Pendidik dan tenaga pendidikan (bahan ajar dan sosialisasi).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_1, 'kode' => 'PK.03.01.10', 'nama' => 'Pendidikan dan tenaga pendidikan (Block Grant, data pendidik dan tenaga pendidik).', 'sifat' => 'B'],
+
+            // Bawah PK.03.02
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.01', 'nama' => 'Sekolah dasar (Kurikulum, Bahan ajar, Pelatihan).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.02', 'nama' => 'Sekolah dasar (Block Grant).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.03', 'nama' => 'Sekolah dasar (Bintek, sosialisasi, lomba, sayembara, festival).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.04', 'nama' => 'Sekolah dasar (BOS dan bantuan siswa miskin).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.05', 'nama' => 'Sekolah menengah pertama (Kurikulum, bahan ajar, pelatihan).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.06', 'nama' => 'Sekolah menengah pertama (Block Grant).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.07', 'nama' => 'Sekolah menengah pertama (Bintek, sosialisasi, lomba, sayembara, festival).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.08', 'nama' => 'Sekolah menengah pertama (BOS dan bantuan siswa miskin).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.09', 'nama' => 'Pendidikan khusus-layanan khusus/PK-LK (Bahan ajar dan petunjuk teknis).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.10', 'nama' => 'Pendidikan khusus-layanan khusus/PK-LK (Block Grant).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.11', 'nama' => 'Pendidikan khusus-layanan khusus/PK-LK (Sosialisasi, lomba, sayembara, festival, gebyar, jambore, kurikulum, alat bantu pembelajaran, pendataan).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.12', 'nama' => 'Pendidikan khusus-layanan khusus/PK-LK (Kelembagaan : unit kesehatan sekolah, pendidikan jasmani adaftif, pendidikan inklusi, block grant, bintek, lomba-lomba).', 'sifat' => 'B'], // Typo asli adaftif
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.13', 'nama' => 'Pendidik dan tenaga pendidik (pendataan, pemetaan, pembinaan guru dan tenaga pendidik).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.14', 'nama' => 'Pendidik dan tenaga pendidik (peningkatan kualitas guru dan tenaga pendidik : standar, uji, dan setifikasi kompetensi).', 'sifat' => 'B'], // Typo asli setifikasi
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.15', 'nama' => 'Pendidik dan tenaga pendidik ( Penilaian prestasi kerja, angka kredit, pengawas sekolah, Bintek/Sosialisasi).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.16', 'nama' => 'Pendidik dan tenaga pendidik (Penghargaan guru dan tenaga pendidikan).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_2, 'kode' => 'PK.03.02.17', 'nama' => 'Pendidik dan tenaga pendidik (Block Grant).', 'sifat' => 'B'],
+
+            // Bawah PK.03.03
+            ['parent_id' => $pk_3_3, 'kode' => 'PK.03.03.01', 'nama' => 'Sekolah menengah atas (kurukulum, bahan ajar, pelatihanbintek/sosialisasi, lomba sayembara dan festival).', 'sifat' => 'B'], // Typo asli kurukulum, pelatihanbintek
+            ['parent_id' => $pk_3_3, 'kode' => 'PK.03.03.02', 'nama' => 'Sekolah menengah atas (Block Grant, Bantuan Operasional Sekolah (BOS), Bantuan siswa miskin).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_3, 'kode' => 'PK.03.03.03', 'nama' => 'Pendidikan khusus-layanan khusus/PK-LK (bahan ajar, Juknis, Sosialisasi, Lomba, jambore, festival, kurikulum/bahan pembelajaran, alat bantu pembelajaran). Pendidikan khusus-layanan khusus/PK-LK (Block Grant, Pendataan).', 'sifat' => 'B'], // Sesuai typo dokumen yg nyambung
+            ['parent_id' => $pk_3_3, 'kode' => 'PK.03.03.04', 'nama' => 'Pendidikan khusus-layanan khusus/PK-LK (Kelembagaan : UKS, Pendidikan jasmani adaftif, pendidikan inklusi, block grant, bintek/sosialisasi, lomba, sayembara, festival,gebyar dan jambore).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_3, 'kode' => 'PK.03.03.05', 'nama' => 'Pendidik dan tenaga pendidik (Pendataan, pemetaan, pembinaan guru dan tenaga pendidik, penilaian prestasi kerja guru dan pengawas sekolah,peningkatan kesejahteraan guru dan tenaga pendidik, Bintek/Sosialisasi).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_3, 'kode' => 'PK.03.03.06', 'nama' => 'Pendidik dan tenaga pendidik (Peningkatan kualitas guru dan tenaga pendidik : standar, uji dan sertifikasi kompetensi).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_3, 'kode' => 'PK.03.03.07', 'nama' => 'Pendidik dan tenaga pendidik (Block Grant, penghargaan guru dan tenaga kependidikan).', 'sifat' => 'B'],
+
+            // Bawah PK.03.04
+            ['parent_id' => $pk_3_4, 'kode' => 'PK.03.04.01', 'nama' => 'Kelembagaan dan kerja sama (Program dan evaluasi, pengembangan kelembagaan).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_4, 'kode' => 'PK.03.04.02', 'nama' => 'Kelembagaan dan kerjasama (Pemberdayaan kelembagaan).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_4, 'kode' => 'PK.03.04.03', 'nama' => 'Kelembagaan dan kerja sama (Kerja sama antar lembaga)', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_4, 'kode' => 'PK.03.04.04', 'nama' => 'Pendidikan dan pengajaran (Penerimaan mahasiswa baru, Perkuliahan, program studi, UTS, UAS,administrasi kelulusan).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_4, 'kode' => 'PK.03.04.05', 'nama' => 'Pendidikan dan kerja sama (Registrasi mahasiswa, kurikulum, tugas akhir : skripsi, tesis, desertasi, komprehensip, KKL, dan PPL).', 'sifat' => 'B'], // Typo asli desertasi, komprehensip
+            ['parent_id' => $pk_3_4, 'kode' => 'PK.03.04.06', 'nama' => 'Pendidikan dan pengajaran (Penetapan kelulusan, ijasah dan transkrip, buku induk nomor registrasi kelulusan).', 'sifat' => 'B'], // Typo asli ijasah
+            ['parent_id' => $pk_3_4, 'kode' => 'PK.03.04.07', 'nama' => 'Dosen (Daftar hadir, ekuivalensi Wajib mengajar Penuh, laporan evaluasi, evaluasi mahasiswa thd dosen, pembimbingan dan pengujian mahasiswa, evaluasi program studi).', 'sifat' => 'B'], // Typo asli thd
+            ['parent_id' => $pk_3_4, 'kode' => 'PK.03.04.08', 'nama' => 'Penunjukan pendidikan (administrasi dan penentu pemakaian : laboratorium, perpustakaan, studio,bengkel, dll).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_4, 'kode' => 'PK.03.04.09', 'nama' => 'Data dan organisasi alumni.', 'sifat' => 'B'],
+
+            // Bawah PK.03.05
+            ['parent_id' => $pk_3_5, 'kode' => 'PK.03.05.01', 'nama' => 'Status: cuti, putus kuliah/pindah, drop out , laporan status mahasiswa/keterangan masih kuliah,dan meninggal dunia.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_5, 'kode' => 'PK.03.05.02', 'nama' => 'Pembinaan/pelatihan mahasiswa.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_5, 'kode' => 'PK.03.05.03', 'nama' => 'Kesejahteraan dan fasilitas.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_5, 'kode' => 'PK.03.05.04', 'nama' => 'Organisasi mahasiswa.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_5, 'kode' => 'PK.03.05.05', 'nama' => 'Himpunan orang tua mahasiswa.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_5, 'kode' => 'PK.03.05.06', 'nama' => 'Kegiatan mahasiswa.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_5, 'kode' => 'PK.03.05.07', 'nama' => 'Lomba kegiatan kemahasiswaan lokal/ nasional/ internasional.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_5, 'kode' => 'PK.03.05.08', 'nama' => 'Prestasi mahasiswa dalam pengembangan sains, teknologi, seni budaya, dan olahraga 5 Tahun.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_5, 'kode' => 'PK.03.05.09', 'nama' => 'Berkas perorangan mahasiswa.', 'sifat' => 'B'],
+
+            // Bawah PK.03.06
+            ['parent_id' => $pk_3_6, 'kode' => 'PK.03.06.01', 'nama' => 'Perencanaan pengadaan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_6, 'kode' => 'PK.03.06.02', 'nama' => 'Karir.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_6, 'kode' => 'PK.03.06.03', 'nama' => 'Kualifikasi.', 'sifat' => 'B'],
+
+            // Bawah PK.03.07
+            ['parent_id' => $pk_3_7, 'kode' => 'PK.03.07.01', 'nama' => 'Penawaran penelitian.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_7, 'kode' => 'PK.03.07.02', 'nama' => 'Perencanaan penelitian .', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_7, 'kode' => 'PK.03.07.03', 'nama' => 'Laporan dan evaluasi hasil penelitian.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_7, 'kode' => 'PK.03.07.04', 'nama' => 'Penyebaran hasil penelitian (sosialisasi dan diseminasi).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_7, 'kode' => 'PK.03.07.05', 'nama' => 'Penemuan teknologi terbarukan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_7, 'kode' => 'PK.03.07.06', 'nama' => 'Forum komunikasi penelitian dan pengembangan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_7, 'kode' => 'PK.03.07.07', 'nama' => 'Data statistik penelitian.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_7, 'kode' => 'PK.03.07.08', 'nama' => 'Seminar, lokakarya, temukarya, dan workshop hasil penelitian.', 'sifat' => 'B'],
+
+            // Bawah PK.03.08
+            ['parent_id' => $pk_3_8, 'kode' => 'PK.03.08.01', 'nama' => 'Penawaran pengabdian..', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_8, 'kode' => 'PK.03.08.02', 'nama' => 'Perencanaan pengabdian.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_8, 'kode' => 'PK.03.08.03', 'nama' => 'Laporan dan evaluasi hasil pengabdian.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_8, 'kode' => 'PK.03.08.04', 'nama' => 'Penyebaran hasil pengabdian (sosialisasi dan diseminasi).', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_8, 'kode' => 'PK.03.08.05', 'nama' => 'Forum pengabdian masyarakat.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_8, 'kode' => 'PK.03.08.06', 'nama' => 'Data statistik pengabdian.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_8, 'kode' => 'PK.03.08.07', 'nama' => 'Penyuluhan dan konsultasi.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_8, 'kode' => 'PK.03.08.08', 'nama' => 'Bantuan sosial.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_8, 'kode' => 'PK.03.08.09', 'nama' => 'KKN.', 'sifat' => 'B'],
+
+            // Bawah PK.03.09
+            ['parent_id' => $pk_3_9, 'kode' => 'PK.03.09.01', 'nama' => 'Majelis wali amanah.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_9, 'kode' => 'PK.03.09.02', 'nama' => 'Senat akademik.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_9, 'kode' => 'PK.03.09.03', 'nama' => 'Dewan guru besar.', 'sifat' => 'B'],
+            ['parent_id' => $pk_3_9, 'kode' => 'PK.03.09.04', 'nama' => 'Perencanaan, program kerja, penilaian, pembinaan penilaian, dan pengembangan komisi guru besar/detasering.', 'sifat' => 'B'],
+
+            // Bawah PK.04.01
+            ['parent_id' => $pk_4_1, 'kode' => 'PK.04.01.01', 'nama' => 'Registrasi nasional.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_1, 'kode' => 'PK.04.01.02', 'nama' => 'Pelindungan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_1, 'kode' => 'PK.04.01.03', 'nama' => 'Pengembangan dan pemanfaatan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_1, 'kode' => 'PK.04.01.04', 'nama' => 'Eksplorasi dan dokumentasi.', 'sifat' => 'B'],
+
+            // Bawah PK.04.02
+            ['parent_id' => $pk_4_2, 'kode' => 'PK.04.02.01', 'nama' => 'Pembinaan seni pertunjukan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_2, 'kode' => 'PK.04.02.02', 'nama' => 'Pembinaan seni rupa.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_2, 'kode' => 'PK.04.02.03', 'nama' => 'Pembinaan literasi dan apresiasi film.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_2, 'kode' => 'PK.04.02.04', 'nama' => 'Dokumentasi seni dan film.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_2, 'kode' => 'PK.04.02.05', 'nama' => 'Publikasi seni dan film.', 'sifat' => 'B'],
+
+            // Bawah PK.04.03
+            ['parent_id' => $pk_4_3, 'kode' => 'PK.04.03.01', 'nama' => 'Kelembagaan dan kepercayaan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_3, 'kode' => 'PK.04.03.02', 'nama' => 'Komunitas kepercayaan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_3, 'kode' => 'PK.04.03.03', 'nama' => 'Pengetahuan dan ekspresi budaya tradisional.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_3, 'kode' => 'PK.04.03.04', 'nama' => 'Lingkungan budaya dan pranata sosial.', 'sifat' => 'B'],
+
+            // Bawah PK.04.04
+            ['parent_id' => $pk_4_4, 'kode' => 'PK.04.04.01', 'nama' => 'Sejarah.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_4, 'kode' => 'PK.04.04.02', 'nama' => 'Pemetaan nilai.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_4, 'kode' => 'PK.04.04.03', 'nama' => 'Verfikasi dan perumusan nilai.', 'sifat' => 'B'], // Typo asli Verfikasi
+            ['parent_id' => $pk_4_4, 'kode' => 'PK.04.04.04', 'nama' => 'Dokumentasi sejarah dan nilai budaya.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_4, 'kode' => 'PK.04.04.05', 'nama' => 'Publikasi sejarah dan nilai budaya.', 'sifat' => 'B'],
+
+            // Bawah PK.04.05
+            ['parent_id' => $pk_4_5, 'kode' => 'PK.04.05.01', 'nama' => 'Internalisasi nilai budaya (pengemasan nilai budaya).', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_5, 'kode' => 'PK.04.05.02', 'nama' => 'Internalisasi nilai budaya (penanaman nilai budaya).', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_5, 'kode' => 'PK.04.05.03', 'nama' => 'Kekayaan budaya.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_5, 'kode' => 'PK.04.05.04', 'nama' => 'Warisan budaya nasional dan dunia.', 'sifat' => 'B'],
+            ['parent_id' => $pk_4_5, 'kode' => 'PK.04.05.05', 'nama' => 'Diplomasi budaya.', 'sifat' => 'B'],
+
+            // Bawah PK.08.01
+            ['parent_id' => $pk_8_1, 'kode' => 'PK.08.01.01', 'nama' => 'Pengkajian.', 'sifat' => 'B'],
+            ['parent_id' => $pk_8_1, 'kode' => 'PK.08.01.02', 'nama' => 'Pembakuan dan pelindungan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_8_1, 'kode' => 'PK.08.01.03', 'nama' => 'Informasi dan publikasi.', 'sifat' => 'B'],
+
+            // Bawah PK.08.02
+            ['parent_id' => $pk_8_2, 'kode' => 'PK.08.02.01', 'nama' => 'Pemasyarakatan.', 'sifat' => 'B'],
+
+            // Bawah PK.08.03
+            ['parent_id' => $pk_8_3, 'kode' => 'PK.08.03.01', 'nama' => 'Proses pembelajaran.', 'sifat' => 'B'],
+            ['parent_id' => $pk_8_3, 'kode' => 'PK.08.03.02', 'nama' => 'Pembinaan tenaga kebahasaan dan kesusasteraan.', 'sifat' => 'B'],
+
+            // Bawah PK.08.04
+            ['parent_id' => $pk_8_4, 'kode' => 'PK.08.04.01', 'nama' => 'Peningkatan fungsi dan peran.', 'sifat' => 'B'],
+            ['parent_id' => $pk_8_4, 'kode' => 'PK.08.04.02', 'nama' => 'Pengendalian penggunaan bahasa.', 'sifat' => 'B'],
+        ]);
+        // ==============================================================================
+        // LANJUTAN URUSAN SUBTANTIF: PK (Pendidikan) - Bagian Akhir
+        // ==============================================================================
+        $id_pk = DB::table('klasifikasis')->where('kode', 'PK')->value('id');
+
+        // --- TAMBAHAN LEVEL ANAK (Level 2) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            ['parent_id' => $id_pk, 'kode' => 'PK.09', 'nama' => 'Pengembangan Sumber Daya Manusia Pendidikan dan Kebudayaan dan Penjaminan Mutu Pendidikan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.10', 'nama' => 'Teknologi Informasi dan Komunikasi Pendidikan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.11', 'nama' => 'Data dan Statistik Pendidikan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.12', 'nama' => 'Arkeologi:', 'sifat' => 'B'],
+            ['parent_id' => $id_pk, 'kode' => 'PK.13', 'nama' => 'Monitoring dan Evaluasi.', 'sifat' => 'B'],
+        ]);
+
+        $pk_9 = DB::table('klasifikasis')->where('kode', 'PK.09')->value('id');
+        $pk_10 = DB::table('klasifikasis')->where('kode', 'PK.10')->value('id');
+        $pk_11 = DB::table('klasifikasis')->where('kode', 'PK.11')->value('id');
+        $pk_12 = DB::table('klasifikasis')->where('kode', 'PK.12')->value('id');
+
+        // --- TAMBAHAN LEVEL CUCU (Level 3) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            // Bawah PK.09
+            ['parent_id' => $pk_9, 'kode' => 'PK.09.01', 'nama' => 'Pengembangan profesi pendidik:', 'sifat' => 'B'],
+            ['parent_id' => $pk_9, 'kode' => 'PK.09.02', 'nama' => 'Pengembangan tenaga kependidikan:', 'sifat' => 'B'],
+            ['parent_id' => $pk_9, 'kode' => 'PK.09.03', 'nama' => 'Pengembangan Sumber Daya Manusia kebudayaan:', 'sifat' => 'B'],
+            ['parent_id' => $pk_9, 'kode' => 'PK.09.04', 'nama' => 'Penjaminan mutu pendidikan:', 'sifat' => 'B'],
+            ['parent_id' => $pk_9, 'kode' => 'PK.09.05', 'nama' => 'Penyusunan materi/SOP/instrumen/panduan/pedoman.', 'sifat' => 'B'],
+            ['parent_id' => $pk_9, 'kode' => 'PK.09.06', 'nama' => 'Penyelenggaraan pelatihan/diseminasi/sosialisasi.', 'sifat' => 'B'],
+            ['parent_id' => $pk_9, 'kode' => 'PK.09.07', 'nama' => 'Penyelenggaraan bimtek/monitoring dan evaluasi.', 'sifat' => 'B'],
+            ['parent_id' => $pk_9, 'kode' => 'PK.09.08', 'nama' => 'Penyaluran block grant pascabencana.', 'sifat' => 'B'],
+            ['parent_id' => $pk_9, 'kode' => 'PK.09.09', 'nama' => 'Lomba/sayembara/festival/olimpiade pendidikan nasional internasional.', 'sifat' => 'B'],
+
+            // Bawah PK.10
+            ['parent_id' => $pk_10, 'kode' => 'PK.10.01', 'nama' => 'Pengembangan teknologi pembelajaran berbasis radio, televisi, dan film:', 'sifat' => 'B'],
+            ['parent_id' => $pk_10, 'kode' => 'PK.10.02', 'nama' => 'Pengembangan teknologi pembelajaran berbasis multimedia dan web:', 'sifat' => 'B'],
+            ['parent_id' => $pk_10, 'kode' => 'PK.10.03', 'nama' => 'Pengembangan jejaring:', 'sifat' => 'B'],
+
+            // Bawah PK.11
+            ['parent_id' => $pk_11, 'kode' => 'PK.11.01', 'nama' => 'Data peserta didik, pendidik, dan tenaga kependidikan:', 'sifat' => 'B'],
+            ['parent_id' => $pk_11, 'kode' => 'PK.11.03', 'nama' => 'Pendayagunaan dan pelayanan data dan statistik:', 'sifat' => 'B'], // Loncat dari 01 ke 03 bawaan asli
+
+            // Bawah PK.12
+            ['parent_id' => $pk_12, 'kode' => 'PK.12.01', 'nama' => 'Program dan kerja sama penelitian:', 'sifat' => 'B'],
+            ['parent_id' => $pk_12, 'kode' => 'PK.12.02', 'nama' => 'Data dan informasi penelitian:', 'sifat' => 'B'],
+        ]);
+
+        // Mengambil ID untuk memasukkan Level Cicit (Level 4)
+        $pk_9_1 = DB::table('klasifikasis')->where('kode', 'PK.09.01')->value('id');
+        $pk_9_2 = DB::table('klasifikasis')->where('kode', 'PK.09.02')->value('id');
+        $pk_9_3 = DB::table('klasifikasis')->where('kode', 'PK.09.03')->value('id');
+        $pk_9_4 = DB::table('klasifikasis')->where('kode', 'PK.09.04')->value('id');
+
+        $pk_10_1 = DB::table('klasifikasis')->where('kode', 'PK.10.01')->value('id');
+        $pk_10_2 = DB::table('klasifikasis')->where('kode', 'PK.10.02')->value('id');
+        $pk_10_3 = DB::table('klasifikasis')->where('kode', 'PK.10.03')->value('id');
+
+        $pk_11_1 = DB::table('klasifikasis')->where('kode', 'PK.11.01')->value('id');
+        $pk_11_3 = DB::table('klasifikasis')->where('kode', 'PK.11.03')->value('id');
+
+        $pk_12_1 = DB::table('klasifikasis')->where('kode', 'PK.12.01')->value('id');
+        $pk_12_2 = DB::table('klasifikasis')->where('kode', 'PK.12.02')->value('id');
+
+        // --- TAMBAHAN LEVEL CICIT (Level 4) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            // Bawah PK.09.01
+            ['parent_id' => $pk_9_1, 'kode' => 'PK.09.01.01', 'nama' => 'Peningkatan kompetensi.', 'sifat' => 'B'],
+            ['parent_id' => $pk_9_1, 'kode' => 'PK.09.01.02', 'nama' => 'Sertifikasi.', 'sifat' => 'B'],
+            
+            // Bawah PK.09.02
+            ['parent_id' => $pk_9_2, 'kode' => 'PK.09.02.01', 'nama' => 'Program.', 'sifat' => 'B'],
+            ['parent_id' => $pk_9_2, 'kode' => 'PK.09.02.02', 'nama' => 'Evaluasi.', 'sifat' => 'B'],
+            
+            // Bawah PK.09.03
+            ['parent_id' => $pk_9_3, 'kode' => 'PK.09.03.01', 'nama' => 'Program.', 'sifat' => 'B'],
+            ['parent_id' => $pk_9_3, 'kode' => 'PK.09.03.02', 'nama' => 'Evaluasi.', 'sifat' => 'B'],
+            
+            // Bawah PK.09.04
+            ['parent_id' => $pk_9_4, 'kode' => 'PK.09.04.01', 'nama' => 'Pemetaan mutu.', 'sifat' => 'B'],
+            ['parent_id' => $pk_9_4, 'kode' => 'PK.09.04.02', 'nama' => 'Sistem informasi.', 'sifat' => 'B'],
+
+            // Bawah PK.10.01
+            ['parent_id' => $pk_10_1, 'kode' => 'PK.10.01.01', 'nama' => 'Perancangan dan produksi.', 'sifat' => 'B'],
+            ['parent_id' => $pk_10_1, 'kode' => 'PK.10.01.02', 'nama' => 'Penyiaran dan pengendalian.', 'sifat' => 'B'],
+            
+            // Bawah PK.10.02
+            ['parent_id' => $pk_10_2, 'kode' => 'PK.10.02.01', 'nama' => 'Perancangan dan produksi.', 'sifat' => 'B'],
+            ['parent_id' => $pk_10_2, 'kode' => 'PK.10.02.02', 'nama' => 'Aplikasi dan pengendalian.', 'sifat' => 'B'],
+            
+            // Bawah PK.10.03
+            ['parent_id' => $pk_10_3, 'kode' => 'PK.10.03.01', 'nama' => 'Pengkajian dan perancangan.', 'sifat' => 'B'],
+            ['parent_id' => $pk_10_3, 'kode' => 'PK.10.03.02', 'nama' => 'Pemeliharaan dan pengendalian.', 'sifat' => 'B'],
+
+            // Bawah PK.11.01
+            ['parent_id' => $pk_11_1, 'kode' => 'PK.11.01.01', 'nama' => 'Validasi dan integrasi data peserta didik;', 'sifat' => 'B'],
+            ['parent_id' => $pk_11_1, 'kode' => 'PK.11.01.02', 'nama' => 'Validasi dan integrasi data peserta pendidik dan tenaga kependidikan;', 'sifat' => 'B'], // Typo bawaan
+            ['parent_id' => $pk_11_1, 'kode' => 'PK.11.01.02', 'nama' => 'Validasi dan integrasi data proses pembelajaran;', 'sifat' => 'B'], // Duplikat 02 bawaan
+
+            // Bawah PK.11.03
+            ['parent_id' => $pk_11_3, 'kode' => 'PK.11.03.01', 'nama' => 'Pendayagunaan dan pelayanan data dan statistik anak.', 'sifat' => 'B'],
+            ['parent_id' => $pk_11_3, 'kode' => 'PK.11.03.02', 'nama' => 'Pendayagunaan dan pelayanan data dan statistik pendidikan dasar dan menengah.', 'sifat' => 'B'],
+            ['parent_id' => $pk_11_3, 'kode' => 'PK.11.03.03', 'nama' => 'Pendayagunaan dan pelayanan data dan statistik pendidikan tinggi.', 'sifat' => 'B'],
+
+            // Bawah PK.12.01
+            ['parent_id' => $pk_12_1, 'kode' => 'PK.12.01.01', 'nama' => 'Program.', 'sifat' => 'B'],
+            ['parent_id' => $pk_12_1, 'kode' => 'PK.12.01.02', 'nama' => 'Kerja sama.', 'sifat' => 'B'],
+
+            // Bawah PK.12.02
+            ['parent_id' => $pk_12_2, 'kode' => 'PK.12.02.01', 'nama' => 'Data.', 'sifat' => 'B'],
+            ['parent_id' => $pk_12_2, 'kode' => 'PK.12.02.02', 'nama' => 'Informasi.', 'sifat' => 'B'],
+        ]);
+        // ==============================================================================
+        // RINCIAN URUSAN SUBTANTIF: PUS (Perpustakaan)
+        // ==============================================================================
+        $id_pus = DB::table('klasifikasis')->where('kode', 'PUS')->value('id') ?? DB::table('klasifikasis')->insertGetId(['kode' => 'PUS', 'nama' => 'Perpustakaan:', 'sifat' => 'B']);
+
+        // --- LEVEL ANAK (Level 2) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            ['parent_id' => $id_pus, 'kode' => 'PUS.01', 'nama' => 'Deposit Bahan Pustaka:', 'sifat' => 'B'],
+            ['parent_id' => $id_pus, 'kode' => 'PUS.02', 'nama' => 'Pengembangan Koleksi dan Pengolahan Bahan Pustaka:', 'sifat' => 'B'],
+            ['parent_id' => $id_pus, 'kode' => 'PUS.03', 'nama' => 'Jasa Perpustakaaan dan Informasi:', 'sifat' => 'B'], // Typo asli (a nya 3)
+            ['parent_id' => $id_pus, 'kode' => 'PUS.04', 'nama' => 'Preservasi Bahan Pustaka:', 'sifat' => 'B'],
+            ['parent_id' => $id_pus, 'kode' => 'PUS.05', 'nama' => 'Sumber Daya Perpustakaan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pus, 'kode' => 'PUS.06', 'nama' => 'Pendidikan dan Pelatihan:', 'sifat' => 'B'],
+            ['parent_id' => $id_pus, 'kode' => 'PUS.07', 'nama' => 'Pengembangan Pustakawan:', 'sifat' => 'B'],
+        ]);
+
+        $pus_1 = DB::table('klasifikasis')->where('kode', 'PUS.01')->value('id');
+        $pus_2 = DB::table('klasifikasis')->where('kode', 'PUS.02')->value('id');
+        $pus_3 = DB::table('klasifikasis')->where('kode', 'PUS.03')->value('id');
+        $pus_4 = DB::table('klasifikasis')->where('kode', 'PUS.04')->value('id');
+        $pus_5 = DB::table('klasifikasis')->where('kode', 'PUS.05')->value('id');
+        $pus_6 = DB::table('klasifikasis')->where('kode', 'PUS.06')->value('id');
+        $pus_7 = DB::table('klasifikasis')->where('kode', 'PUS.07')->value('id');
+
+        // --- LEVEL CUCU (Level 3) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            // Bawah PUS.01
+            ['parent_id' => $pus_1, 'kode' => 'PUS.01.01', 'nama' => 'Serah Simpan Karya Cetak dan Karya Rekam.', 'sifat' => 'B'],
+            ['parent_id' => $pus_1, 'kode' => 'PUS.01.02', 'nama' => 'Pangkalan Data Penerbit dan Pengusaha Rekaman.', 'sifat' => 'B'],
+            ['parent_id' => $pus_1, 'kode' => 'PUS.01.03', 'nama' => 'Terbitan Badan Internasional dan Regional.', 'sifat' => 'B'],
+            ['parent_id' => $pus_1, 'kode' => 'PUS.01.04', 'nama' => 'Pemantauan Wajib Serah Simpan Karya Cetak dan Karya Rekam.', 'sifat' => 'B'],
+            ['parent_id' => $pus_1, 'kode' => 'PUS.01.05', 'nama' => 'Bibliografi dan Katalog:', 'sifat' => 'B'],
+            ['parent_id' => $pus_1, 'kode' => 'PUS.01.06', 'nama' => 'Pendaftaran International Standard Book Number (ISBN).', 'sifat' => 'B'],
+            ['parent_id' => $pus_1, 'kode' => 'PUS.01.07', 'nama' => 'Pendaftaran International Standard Music Number (ISMN).', 'sifat' => 'B'],
+
+            // Bawah PUS.02
+            ['parent_id' => $pus_2, 'kode' => 'PUS.02.01', 'nama' => 'Akuisisi:', 'sifat' => 'B'],
+            ['parent_id' => $pus_2, 'kode' => 'PUS.02.02', 'nama' => 'Pengolahan Bahan Pustaka.', 'sifat' => 'B'],
+            ['parent_id' => $pus_2, 'kode' => 'PUS.02.03', 'nama' => 'Pangkalan Data Katalog Koleksi.', 'sifat' => 'B'],
+            ['parent_id' => $pus_2, 'kode' => 'PUS.02.04', 'nama' => 'Kajian Pengembangan Bahan Perpustakaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_2, 'kode' => 'PUS.02.05', 'nama' => 'Pedoman Pengolahan Bahan Perpustakaan.', 'sifat' => 'B'],
+
+            // Bawah PUS.03
+            ['parent_id' => $pus_3, 'kode' => 'PUS.03.01', 'nama' => 'Keanggotaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_3, 'kode' => 'PUS.03.02', 'nama' => 'Sirkulasi.', 'sifat' => 'B'],
+            ['parent_id' => $pus_3, 'kode' => 'PUS.03.03', 'nama' => 'Referensi.', 'sifat' => 'B'],
+            ['parent_id' => $pus_3, 'kode' => 'PUS.03.04', 'nama' => 'Alih Aksara, Alih Bahasa, dan Kajian Naskah Nusantara.', 'sifat' => 'B'],
+            ['parent_id' => $pus_3, 'kode' => 'PUS.03.05', 'nama' => 'Kerja Sama Perpustakaan:', 'sifat' => 'B'],
+            ['parent_id' => $pus_3, 'kode' => 'PUS.03.06', 'nama' => 'Pengembangan Implementasi Teknologi Informasi Perpustakaan:', 'sifat' => 'B'],
+
+            // Bawah PUS.04
+            ['parent_id' => $pus_4, 'kode' => 'PUS.04.01', 'nama' => 'Konservasi:', 'sifat' => 'B'],
+            ['parent_id' => $pus_4, 'kode' => 'PUS.04.02', 'nama' => 'Reprografi ( Mikrofilm, Reproduksi Foto).', 'sifat' => 'B'],
+            ['parent_id' => $pus_4, 'kode' => 'PUS.04.04', 'nama' => 'Kurasi Digital.', 'sifat' => 'B'], // Sesuai dokumen loncat dari 02 ke 04
+
+            // Bawah PUS.05
+            ['parent_id' => $pus_5, 'kode' => 'PUS.05.01', 'nama' => 'Pengembangan Perpustakaan dan Pengkajian Minat Baca:', 'sifat' => 'B'],
+            ['parent_id' => $pus_5, 'kode' => 'PUS.05.02', 'nama' => 'Pembakuan Perpustakaan:', 'sifat' => 'B'],
+            ['parent_id' => $pus_5, 'kode' => 'PUS.05.03', 'nama' => 'Akreditasi Perpustakaan:', 'sifat' => 'B'],
+            ['parent_id' => $pus_5, 'kode' => 'PUS.05.04', 'nama' => 'Pangkalan Data Perpustakaan:', 'sifat' => 'B'],
+            ['parent_id' => $pus_5, 'kode' => 'PUS.05.05', 'nama' => 'Pengkajian Perpustakaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5, 'kode' => 'PUS.05.06', 'nama' => 'Pemasyarakatan Minat Baca:', 'sifat' => 'B'],
+            ['parent_id' => $pus_5, 'kode' => 'PUS.05.07', 'nama' => 'Organisasi Perpustakaan:', 'sifat' => 'B'],
+
+            // Bawah PUS.06
+            ['parent_id' => $pus_6, 'kode' => 'PUS.06.01', 'nama' => 'Perencanaan Pendidikan dan Pelatihan :', 'sifat' => 'B'],
+            ['parent_id' => $pus_6, 'kode' => 'PUS.06.02', 'nama' => 'Penyelenggaraan dan Evaluasi Pendidikan dan Pelatihan:', 'sifat' => 'B'],
+
+            // Bawah PUS.07
+            ['parent_id' => $pus_7, 'kode' => 'PUS.07.01', 'nama' => 'Sertifikasi Tenaga Perpustakaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_7, 'kode' => 'PUS.07.02', 'nama' => 'Pembinaan Tenaga Perpustakaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_7, 'kode' => 'PUS.07.05', 'nama' => 'Penerbitan Jurnal.', 'sifat' => 'B'], // Loncat dari 02 ke 05
+            ['parent_id' => $pus_7, 'kode' => 'PUS.07.06', 'nama' => 'Penilaian Jabatan Fungsional Pustakawan:', 'sifat' => 'B'],
+            ['parent_id' => $pus_7, 'kode' => 'PUS.07.07', 'nama' => 'Pemasyarakatan .', 'sifat' => 'B'], // Typo asli spasi sebelum titik
+            ['parent_id' => $pus_7, 'kode' => 'PUS.07.08', 'nama' => 'Evaluasi Tenaga Perpustakaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_7, 'kode' => 'PUS.07.09', 'nama' => 'Pangkalan Data Tenaga Perpustakaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_7, 'kode' => 'PUS.07.10', 'nama' => 'Pangkalan Data Tim Penilai Pustakawan.', 'sifat' => 'B'],
+        ]);
+
+        // Mengambil ID untuk memasukkan Level Cicit (Level 4)
+        $pus_1_5 = DB::table('klasifikasis')->where('kode', 'PUS.01.05')->value('id');
+        $pus_2_1 = DB::table('klasifikasis')->where('kode', 'PUS.02.01')->value('id');
+        $pus_3_5 = DB::table('klasifikasis')->where('kode', 'PUS.03.05')->value('id');
+        $pus_3_6 = DB::table('klasifikasis')->where('kode', 'PUS.03.06')->value('id');
+        $pus_4_1 = DB::table('klasifikasis')->where('kode', 'PUS.04.01')->value('id');
+        $pus_5_1 = DB::table('klasifikasis')->where('kode', 'PUS.05.01')->value('id');
+        $pus_5_2 = DB::table('klasifikasis')->where('kode', 'PUS.05.02')->value('id');
+        $pus_5_3 = DB::table('klasifikasis')->where('kode', 'PUS.05.03')->value('id');
+        $pus_5_4 = DB::table('klasifikasis')->where('kode', 'PUS.05.04')->value('id');
+        $pus_5_6 = DB::table('klasifikasis')->where('kode', 'PUS.05.06')->value('id');
+        $pus_5_7 = DB::table('klasifikasis')->where('kode', 'PUS.05.07')->value('id');
+        $pus_6_1 = DB::table('klasifikasis')->where('kode', 'PUS.06.01')->value('id');
+        $pus_6_2 = DB::table('klasifikasis')->where('kode', 'PUS.06.02')->value('id');
+        $pus_7_6 = DB::table('klasifikasis')->where('kode', 'PUS.07.06')->value('id');
+
+        // --- LEVEL CICIT (Level 4) ---
+        DB::table('klasifikasis')->insertOrIgnore([
+            // Bawah PUS.01.05
+            ['parent_id' => $pus_1_5, 'kode' => 'PUS.01.05.01', 'nama' => 'Bibliografi Nasional Indonesia (BNI).', 'sifat' => 'B'],
+            ['parent_id' => $pus_1_5, 'kode' => 'PUS.01.05.02', 'nama' => 'Katalog Induk Nasional (KIN).', 'sifat' => 'B'],
+            ['parent_id' => $pus_1_5, 'kode' => 'PUS.01.05.03', 'nama' => 'Katalog Dalam Terbitan (KDT).', 'sifat' => 'B'],
+
+            // Bawah PUS.02.01
+            ['parent_id' => $pus_2_1, 'kode' => 'PUS.02.01.01', 'nama' => 'Pembelian.', 'sifat' => 'B'],
+            ['parent_id' => $pus_2_1, 'kode' => 'PUS.02.01.02', 'nama' => 'Hibah.', 'sifat' => 'B'],
+            ['parent_id' => $pus_2_1, 'kode' => 'PUS.02.01.03', 'nama' => 'Hadiah.', 'sifat' => 'B'],
+            ['parent_id' => $pus_2_1, 'kode' => 'PUS.02.01.04', 'nama' => 'Tukar Menukar.', 'sifat' => 'B'],
+            ['parent_id' => $pus_2_1, 'kode' => 'PUS.02.01.05', 'nama' => 'Implementasi Undang-Undang KCKR.', 'sifat' => 'B'],
+            ['parent_id' => $pus_2_1, 'kode' => 'PUS.02.01.06', 'nama' => 'Terbitan Internal.', 'sifat' => 'B'],
+            ['parent_id' => $pus_2_1, 'kode' => 'PUS.02.01.07', 'nama' => 'Pendistribusian Bahan Pustaka Surplus.', 'sifat' => 'B'],
+            ['parent_id' => $pus_2_1, 'kode' => 'PUS.02.01.08', 'nama' => 'Inventarisasi Bahan Pustaka (Buku Induk).', 'sifat' => 'B'],
+
+            // Bawah PUS.03.05
+            ['parent_id' => $pus_3_5, 'kode' => 'PUS.03.05.01', 'nama' => 'MoU.', 'sifat' => 'B'],
+            ['parent_id' => $pus_3_5, 'kode' => 'PUS.03.05.02', 'nama' => 'Perjanjian Kerja Sama.', 'sifat' => 'B'],
+            ['parent_id' => $pus_3_5, 'kode' => 'PUS.03.05.03', 'nama' => 'Partisipasi organisasi profesi dan kerjasama internasional.', 'sifat' => 'B'],
+
+            // Bawah PUS.03.06
+            ['parent_id' => $pus_3_6, 'kode' => 'PUS.03.06.01', 'nama' => 'Pengembangan Situs Web.', 'sifat' => 'B'],
+            ['parent_id' => $pus_3_6, 'kode' => 'PUS.03.06.02', 'nama' => 'Pengembangan Kemas Ulang Informasi Multimedia.', 'sifat' => 'B'],
+            ['parent_id' => $pus_3_6, 'kode' => 'PUS.03.06.03', 'nama' => 'Pengembangan Program Aplikasi Perpustakaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_3_6, 'kode' => 'PUS.03.06.04', 'nama' => 'Pengembangan Pangkalan Data Kepustakaan Digital.', 'sifat' => 'B'],
+            ['parent_id' => $pus_3_6, 'kode' => 'PUS.03.06.05', 'nama' => 'Pangkalan Data Layanan Perpustakaan.', 'sifat' => 'B'],
+
+            // Bawah PUS.04.01
+            ['parent_id' => $pus_4_1, 'kode' => 'PUS.04.01.01', 'nama' => 'Perawatan Bahan Pustaka.', 'sifat' => 'B'],
+            ['parent_id' => $pus_4_1, 'kode' => 'PUS.04.01.02', 'nama' => 'Perbaikan Bahan Pustaka.', 'sifat' => 'B'],
+            ['parent_id' => $pus_4_1, 'kode' => 'PUS.04.01.03', 'nama' => 'Penjilidan Bahan Pustaka.', 'sifat' => 'B'],
+
+            // Bawah PUS.05.01
+            ['parent_id' => $pus_5_1, 'kode' => 'PUS.05.01.01', 'nama' => 'Perpustakaan Umum.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_1, 'kode' => 'PUS.05.01.02', 'nama' => 'Perpustakaan Khusus.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_1, 'kode' => 'PUS.05.01.03', 'nama' => 'Perpustakaan Sekolah.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_1, 'kode' => 'PUS.05.01.04', 'nama' => 'Perpustakaan Perguruan Tinggi.', 'sifat' => 'B'],
+
+            // Bawah PUS.05.02
+            ['parent_id' => $pus_5_2, 'kode' => 'PUS.05.02.01', 'nama' => 'Standar Nasional Perpustakaan Umum.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_2, 'kode' => 'PUS.05.02.02', 'nama' => 'Standar Nasional Perpustakaan Khusus.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_2, 'kode' => 'PUS.05.02.03', 'nama' => 'Standar Nasional Perpustakaan Sekolah.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_2, 'kode' => 'PUS.05.02.04', 'nama' => 'Standar Nasional Perpustakaan Perguruan Tinggi.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_2, 'kode' => 'PUS.05.02.05', 'nama' => 'Pedoman Perpustakaan Umum.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_2, 'kode' => 'PUS.05.02.06', 'nama' => 'Pedoman Perpustakaan Khusus.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_2, 'kode' => 'PUS.05.02.07', 'nama' => 'Pedoman Perpustakaan Sekolah.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_2, 'kode' => 'PUS.05.02.08', 'nama' => 'Pedoman Perpustakaan Perguruan Tinggi.', 'sifat' => 'B'],
+
+            // Bawah PUS.05.03
+            ['parent_id' => $pus_5_3, 'kode' => 'PUS.05.03.01', 'nama' => 'Permintaan akreditasi.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_3, 'kode' => 'PUS.05.03.02', 'nama' => 'Pemberian akreditasi.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_3, 'kode' => 'PUS.05.03.03', 'nama' => 'Pangkalan data perpustakaan yang diakreditasi.', 'sifat' => 'B'],
+
+            // Bawah PUS.05.04
+            ['parent_id' => $pus_5_4, 'kode' => 'PUS.05.04.01', 'nama' => 'Nomor Pokok Perpustakaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_4, 'kode' => 'PUS.05.04.02', 'nama' => 'Perpustakaan Berbasis Wilayah.', 'sifat' => 'B'],
+
+            // Bawah PUS.05.06
+            ['parent_id' => $pus_5_6, 'kode' => 'PUS.05.06.01', 'nama' => 'Pedoman Pembudayaan Minat Baca.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_6, 'kode' => 'PUS.05.06.02', 'nama' => 'Kajian Pembudayaan Minat Baca.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_6, 'kode' => 'PUS.05.06.03', 'nama' => 'Gerakan Pembudayaan Kegemaran Membaca.', 'sifat' => 'B'],
+
+            // Bawah PUS.05.07
+            ['parent_id' => $pus_5_7, 'kode' => 'PUS.05.07.01', 'nama' => 'Forum Perpustakaan Umum.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_7, 'kode' => 'PUS.05.07.02', 'nama' => 'Forum Perpustakaan Khusus.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_7, 'kode' => 'PUS.05.07.03', 'nama' => 'Forum Perpustakaan Perguruan Tinggi.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_7, 'kode' => 'PUS.05.07.04', 'nama' => 'Forum Perpustakaan Sekolah.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_7, 'kode' => 'PUS.05.07.05', 'nama' => 'Gerakan Pemasyarakatan Minat Baca.', 'sifat' => 'B'],
+            ['parent_id' => $pus_5_7, 'kode' => 'PUS.05.07.06', 'nama' => 'Organisasi Perpustakaan Lainnya.', 'sifat' => 'B'],
+
+            // Bawah PUS.06.01
+            ['parent_id' => $pus_6_1, 'kode' => 'PUS.06.01.01', 'nama' => 'Perencanaan Program Diklat.', 'sifat' => 'B'],
+            ['parent_id' => $pus_6_1, 'kode' => 'PUS.06.01.02', 'nama' => 'Sistem dan Metode.', 'sifat' => 'B'],
+            ['parent_id' => $pus_6_1, 'kode' => 'PUS.06.01.03', 'nama' => 'Kurikulum/Silabus/Bahan Ajar/Modul', 'sifat' => 'B'], // Tidak ada titik di aslinya
+            ['parent_id' => $pus_6_1, 'kode' => 'PUS.06.01.04', 'nama' => 'Konsultasi Penyelenggaraan Pendidikan dan Pelatihan .', 'sifat' => 'B'], // Spasi sebelum titik
+            ['parent_id' => $pus_6_1, 'kode' => 'PUS.06.01.05', 'nama' => 'Kerja Sama Pendidikan dan Pelatihan.', 'sifat' => 'B'],
+
+            // Bawah PUS.06.02
+            ['parent_id' => $pus_6_2, 'kode' => 'PUS.06.02.01', 'nama' => 'Fungsional Pustakawan Tingkat Terampil.', 'sifat' => 'B'],
+            ['parent_id' => $pus_6_2, 'kode' => 'PUS.06.02.02', 'nama' => 'Fungsional Pustakawan Tingkat Ahli.', 'sifat' => 'B'],
+            ['parent_id' => $pus_6_2, 'kode' => 'PUS.06.02.03', 'nama' => 'Teknis Pimpinan Lembaga Perpustakaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_6_2, 'kode' => 'PUS.06.02.04', 'nama' => 'Teknis Pustakawan/Pengelola Perpustakaan.', 'sifat' => 'B'],
+            ['parent_id' => $pus_6_2, 'kode' => 'PUS.06.02.05', 'nama' => 'Teknis Pustakawan/Pengelola Perpustakaan.', 'sifat' => 'B'], // Duplikat nama asli dari dokumen
+            ['parent_id' => $pus_6_2, 'kode' => 'PUS.06.02.06', 'nama' => 'Evaluasi Pasca Diklat.', 'sifat' => 'B'],
+
+            // Bawah PUS.07.06
+            ['parent_id' => $pus_7_6, 'kode' => 'PUS.07.06.01', 'nama' => 'Tim Penilai Instansi (Perpustakaan Nasional).', 'sifat' => 'B'],
+            ['parent_id' => $pus_7_6, 'kode' => 'PUS.07.06.02', 'nama' => 'Tim Penilai Pusat.', 'sifat' => 'B'],
+        ]);
     }
 
     public function down(): void
