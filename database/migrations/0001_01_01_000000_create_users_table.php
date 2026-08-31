@@ -8,19 +8,16 @@ use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
+        // 1. BANGUN RUMAHNYA DULU (Tabel Users + Kolom Role)
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            // Kalau tabel users kamu ada kolom role, uncomment baris di bawah ini:
-            // $table->string('role')->default('user');
+            $table->string('role')->default('user'); // Nah, kolom role langsung nangkring di sini
             $table->rememberToken();
             $table->timestamps();
         });
@@ -40,20 +37,17 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
 
-        // Pantek data akun Admin otomatis
+        // 2. MASUKIN ORANGNYA (Pantek akun admin otomatis)
         DB::table('users')->insert([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345678'),
-            // 'role' => 'admin', // Sesuaikan jika tabel users pakai kolom role
+            'role' => 'admin',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

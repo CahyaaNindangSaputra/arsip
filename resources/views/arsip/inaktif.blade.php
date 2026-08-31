@@ -90,7 +90,7 @@
                                 <td class="px-5 py-4 text-center font-bold text-amber-600">{{ str_replace(['_inv', '_eva', '_pen', 'inv', 'eva', 'pen'], '', $arsip->kode_klasifikasi) }}</td>
                                 <td class="px-5 py-4 font-medium">{{ $arsip->nomor_berkas }}</td>
                                 <td class="px-5 py-4 whitespace-normal">{{ $arsip->uraian_informasi_arsip }}</td>
-                                <!-- Kolom Unit Pengolah dari relasi user -->
+                         
                                 <td class="px-5 py-4 font-medium text-slate-600">{{ $arsip->user ? $arsip->user->name : 'Admin' }}</td>
                                 <td class="px-5 py-4 text-center text-slate-500">{{ $arsip->kurun_waktu ?? '-' }}</td>
                                 <td class="px-5 py-4 text-center">{{ $arsip->jumlah }}</td>

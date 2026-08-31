@@ -3840,7 +3840,7 @@ return new class extends Migration
         // ==============================================================================
         // LANJUTAN URUSAN SUBTANTIF: PM (Penanaman Modal) - Bagian 2
         // ==============================================================================
-
+        $id_pm = DB::table('klasifikasis')->where('kode', 'PM')->value('id');
         // --- TAMBAHAN LEVEL ANAK (Level 2) ---
         DB::table('klasifikasis')->insertOrIgnore([
             ['parent_id' => $id_pm, 'kode' => 'PM.03', 'nama' => 'Promosi Penanaman Modal:', 'sifat' => 'B'],

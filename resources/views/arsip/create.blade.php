@@ -13,14 +13,20 @@
     <style>
         /* Styling Select2 agar menyatu rapi dengan desain minimalis standar */
         .select2-container .select2-selection--single {
-            height: 38px !important;
+            height: 40px !important;
             border: 1px solid #d1d5db !important;
             border-radius: 0.375rem !important;
-            padding-top: 5px !important;
+            padding-top: 6px !important;
             background-color: #ffffff !important;
         }
         .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 36px !important;
+            height: 38px !important;
+        }
+        
+        /* Styling tambahan untuk hasil dropdown Select2 agar ada jarak & estetika */
+        .select2-results__option {
+            padding: 8px 12px !important;
+            font-size: 13px !important;
         }
     </style>
 
@@ -31,69 +37,27 @@
                 <form action="{{ route('arsip.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
                     @csrf
 
-                    <!-- Kode Klasifikasi -->
-                    <div>
-                        <label class="block font-medium text-xs text-gray-700 mb-1">Kode Klasifikasi</label>
-                        <select name="kode_klasifikasi" id="kode_klasifikasi" class="w-full" required onchange="autofillSifat(this)">
-                            <option value="">-- Pilih atau Cari Kode Klasifikasi --</option>
-                            
-                            @php
-                                $indukUtamas = App\Models\Klasifikasi::whereNull('parent_id')->get();
-                            @endphp
-                        
-                            @foreach($indukUtamas as $utama)
-                                <option value="{{ $utama->kode }}" disabled class="font-bold bg-gray-200 text-gray-900">
-                                    📂 [{{ $utama->kode }}] {{ $utama->nama }}
-                                </option>
-                        
-                                @php
-                                    $bidangs = App\Models\Klasifikasi::where('parent_id', $utama->id)->get();
-                                @endphp
-                        
-                                @foreach($bidangs as $bidang)
-                                    @php
-                                        $cleanBidangKode = str_replace(['_inv', '_eva', '_pen', '_pantau', '_eval', '_hayati', '_perairan', '_pesisir', '_atmosfer', '_adaptasi', '_b3', '_verif', '_limbah', '_sampah', '_admin', '_sengketa', '_pidana', '_perjanjian', '_kom', '_inisiatif', '_peran', '_ormas'], '', $bidang->kode);
-                                    @endphp
-                        
-                                    <option value="{{ $bidang->kode }}" disabled class="font-semibold bg-gray-100 text-gray-800">
-                                        &nbsp;&nbsp;&nbsp;&nbsp;📂 [{{ $cleanBidangKode }}] {{ $bidang->nama }}
-                                    </option>
-                        
-                                    @php
-                                        $babs = App\Models\Klasifikasi::where('parent_id', $bidang->id)->get();
-                                    @endphp
-                        
-                                    @foreach($babs as $bab)
-                                        @php
-                                            $subAnaks = App\Models\Klasifikasi::where('parent_id', $bab->id)->get();
-                                            $punyaSub = $subAnaks->count() > 0;
-                                            $cleanBabKode = str_replace(['_inv', '_eva', '_pen', '_pantau', '_eval', '_hayati', '_perairan', '_pesisir', '_atmosfer', '_adaptasi', '_b3', '_verif', '_limbah', '_sampah', '_admin', '_sengketa', '_pidana', '_perjanjian', '_kom', '_inisiatif', '_peran', '_ormas'], '', $bab->kode);
-                                        @endphp
-                        
-                                        @if(!$punyaSub)
-                                            <option value="{{ $bab->kode }}" data-sifat="{{ $bab->sifat }}" class="text-gray-900 bg-white" {{ old('kode_klasifikasi') == $bab->kode ? 'selected' : '' }}>
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[{{ $cleanBabKode }}] {{ $bab->nama }}
-                                            </option>
-                                        @else
-                                            <option value="{{ $bab->kode }}" disabled class="text-gray-500 bg-gray-50 italic">
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[{{ $cleanBabKode }}] {{ $bab->nama }}
-                                            </option>
-                        
-                                            @foreach($subAnaks as $anak)
-                                                @php
-                                                    $cleanAnakKode = str_replace(['inv', 'eva', 'pen'], '', $anak->kode);
-                                                @endphp
-                                                <option value="{{ $anak->kode }}" data-sifat="{{ $anak->sifat }}" class="text-gray-900 bg-white" {{ old('kode_klasifikasi') == $anak->kode ? 'selected' : '' }}>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ [{{ $cleanAnakKode }}] {{ $anak->nama }}
-                                                </option>
-                                            @endforeach
-                                        @endif
-                                    @endforeach
-                                @endforeach
-                            @endforeach
-                        </select>
-                    </div>
+              <!-- Kode Klasifikasi -->
+              <div>
+                <label class="block font-medium text-xs text-gray-700 mb-1">Kode Klasifikasi</label>
+                <select name="kode_klasifikasi" id="kode_klasifikasi" class="w-full" required onchange="autofillSifat(this)">
+                    <option value="">-- Pilih atau Cari Kode Klasifikasi --</option>
+                    
+                    @php
+                        $semuaKlasifikasi = App\Models\Klasifikasi::orderBy('kode', 'asc')->get();
+                    @endphp
+                
+                    @foreach($semuaKlasifikasi as $item)
+                        @php
+                            $level = substr_count($item->kode, '.');
+                        @endphp
 
+                        <option value="{{ $item->kode }}" data-sifat="{{ $item->sifat }}" data-level="{{ $level }}">
+                            [{{ $item->kode }}] {{ $item->nama }} (Sifat: {{ $item->sifat }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
                     <!-- Nomor Berkas -->
                     <div>
                         <label class="block font-medium text-xs text-gray-700 mb-1">Nomor Berkas</label>
@@ -147,24 +111,60 @@
         </div>
     </div>
 
-    <!-- Script JavaScript Select2 & Autofill Sifat -->
-    <script>
-        $(document).ready(function() {
-            $('#kode_klasifikasi').select2({
-                placeholder: "-- Pilih atau Cari Kode Klasifikasi --",
-                allowClear: true,
-                width: '100%'
-            });
-        });
-
-        function autofillSifat(selectElement) {
-            const selectedOption = selectElement.options[selectElement.selectedIndex];
-            const sifat = selectedOption.getAttribute('data-sifat'); 
-            const dropdownKeamanan = document.getElementById('klasifikasi_keamanan_akses');
-
-            if (sifat) {
-                dropdownKeamanan.value = sifat;
+ <!-- Script JavaScript Select2 & Autofill Sifat -->
+ <script>
+    $(document).ready(function() {
+        // Fungsi untuk nampilin teks di dropdown dengan bersih & tidak bikin pusing
+        function formatKlasifikasi(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            var $element = $(state.element);
+            var level = parseInt($element.data('level')) || 0;
+            var text = state.text;
+            
+            // Tanpa panah ribet, kita mainkan indentasi bersih dan ketebalan font
+            if (level === 0) {
+                // Level Utama: Tebal dan ada ikon folder
+                return $('<div style="font-weight: 700; color: #111827; padding: 3px 0;">📂 ' + text + '</div>');
+            } else if (level === 1) {
+                // Level Anak: Sedikit menjorok ke kanan
+                return $('<div style="padding-left: 15px; font-weight: 600; color: #374151; font-size: 13px;">• ' + text + '</div>');
+            } else if (level === 2) {
+                // Level Cucu: Menjorok lebih dalam
+                return $('<div style="padding-left: 30px; font-weight: 400; color: #4b5563; font-size: 12.5px;">- ' + text + '</div>');
+            } else {
+                // Level Cicit/Seterusnya: Menjorok paling dalam dengan warna lebih soft
+                return $('<div style="padding-left: 45px; font-weight: 400; color: #6b7280; font-size: 12px;">› ' + text + '</div>');
             }
         }
-    </script>
+
+        // Fungsi untuk nampilin teks di kotak utama setelah dipilih (bersih)
+        function formatKlasifikasiSelection(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            return state.text;
+        }
+
+        $('#kode_klasifikasi').select2({
+            placeholder: "-- Pilih atau Cari Kode Klasifikasi --",
+            allowClear: true,
+            width: '100%',
+            templateResult: formatKlasifikasi,
+            templateSelection: formatKlasifikasiSelection,
+            escapeMarkup: function (markup) { return markup; }
+        });
+    });
+
+    function autofillSifat(selectElement) {
+        const selectedOption = $('#kode_klasifikasi').find(':selected');
+        const sifat = selectedOption.attr('data-sifat');
+        const dropdownKeamanan = document.getElementById('klasifikasi_keamanan_akses');
+
+        if (sifat) {
+            dropdownKeamanan.value = sifat;
+        }
+    }
+</script>[]
 </x-app-layout>

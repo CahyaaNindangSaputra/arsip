@@ -4,10 +4,10 @@
         <!-- HEADER HALAMAN -->
         <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
             <h2 class="font-bold text-2xl text-slate-800 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
-                    <i class="fas fa-box-archive text-lg"></i>
+                <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 shadow-sm">
+                    <i class="fas fa-handshake text-lg"></i>
                 </div>
-                <span>Daftar Arsip Inaktif <span class="text-rose-600">Usul Musnah</span></span>
+                <span>Daftar Arsip Statis <span class="text-blue-600">Usul Serah</span></span>
             </h2>
             <div class="bg-white border border-slate-200 px-4 py-2 rounded-lg text-xs font-semibold text-slate-500 shadow-sm">
                 Sistem Manajemen Kearsipan
@@ -29,17 +29,17 @@
         <!-- KARTU DATA PUTIH -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             
-            <!-- Toolbar: Search, Filter, dan Tombol Hijau -->
+            <!-- Toolbar: Search, Filter, dan Tombol Cetak -->
             <div class="p-4 border-b border-slate-200 bg-white flex flex-col lg:flex-row justify-between items-center gap-4">
                 <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
                     <div class="relative w-full sm:w-64">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                             <i class="fas fa-search text-sm"></i>
                         </span>
-                        <input type="text" x-model="search" placeholder="Cari uraian, no berkas..." class="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-shadow">
+                        <input type="text" x-model="search" placeholder="Cari uraian, no berkas..." class="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-shadow">
                     </div>
 
-                    <select x-model="selectedBagian" class="w-full sm:w-48 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-shadow">
+                    <select x-model="selectedBagian" class="w-full sm:w-48 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-shadow">
                         <option value="">Semua Bidang</option>
                         @php $daftarBagian = \App\Models\User::where('role', '!=', 'admin')->pluck('name'); @endphp
                         @foreach($daftarBagian as $bagian)
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <!-- ISI TABEL BERFORMAT CLEAN & MODERN -->
+            <!-- ISI TABEL (Elegan & Clean tapi 6 Kolom) -->
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm border-collapse min-w-[1000px]">
                     <thead class="bg-white text-slate-600 border-b border-slate-200">
@@ -69,7 +69,8 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 bg-white text-slate-700">
-                        @forelse($arsipMusnah as $index => $arsip)
+                        <!-- Perhatikan: Variabelnya $arsips sesuai dengan controller lu -->
+                        @forelse($arsips as $index => $arsip)
                             @php
                                 $namaPengirim = $arsip->user ? strtolower($arsip->user->name) : 'admin';
                                 $jenisSeriArsip = $arsip->jenis_seri_arsip ?? $arsip->uraian_informasi_berkas;
@@ -86,12 +87,12 @@
                                 <td class="px-5 py-4 text-center text-slate-500">{{ $arsip->tingkat_perkembangan ?? '-' }}</td>
                                 <td class="px-5 py-4 text-center text-slate-500">{{ $arsip->kurun_waktu ?? '-' }}</td>
                                 <td class="px-5 py-4 text-center">{{ $arsip->jumlah }}</td>
-                                <td class="px-5 py-4 text-center text-slate-500">Musnah</td>
+                                <td class="px-5 py-4 text-center text-slate-500 font-semibold text-blue-600">Serah</td>
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="6" class="px-5 py-16 text-center text-slate-400">
-                                    Belum ada data arsip yang diusulkan musnah.
+                                    Belum ada data arsip yang diusulkan serah.
                                 </td>
                             </tr>
                         @endforelse
@@ -101,4 +102,4 @@
             
         </div>
     </div>
-</x-app-layout> 
+</x-app-layout>
