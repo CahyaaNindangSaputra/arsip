@@ -68,6 +68,7 @@ Route::get('/arsip/status/serah', [ArsipController::class, 'serah'])->name('arsi
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/api/notifications', [ArsipController::class, 'getNotificationCounts'])->middleware('auth');
 });
 
 require __DIR__.'/auth.php';

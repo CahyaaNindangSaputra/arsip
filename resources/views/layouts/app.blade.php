@@ -25,7 +25,7 @@
 </head>
 <body x-data="{ sidebarOpen: true }" class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
     
-    <!-- Panggil Sidebar -->
+ 
     @include('layouts.navigation')
 
     <!-- Konten Utama -->
@@ -34,6 +34,17 @@
             {{ $slot }}
         </main>
     </div>
+    <!-- OVERLAY LOADING SPINNER -->
+<div x-data="{ pageLoading: false }" 
+@beforeunload.window="pageLoading = true"
+x-show="pageLoading" 
+style="display: none;" 
+class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs transition-opacity">
+<div class="bg-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-100">
+   <i class="fas fa-circle-notch text-blue-600 text-2xl animate-spin"></i>
+   <span class="text-sm font-bold text-slate-700">Memuat Sistem...</span>
+</div>
+</div>
 
 </body>
 </html>

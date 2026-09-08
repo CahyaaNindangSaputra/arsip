@@ -11,7 +11,6 @@ class Arsip extends Model
 
     protected $table = 'arsips';
 
-    // Izinkan kolom-kolom ini diisi lewat form/update
     protected $fillable = [
         'user_id',
         'kode_klasifikasi',
@@ -22,6 +21,7 @@ class Arsip extends Model
         'klasifikasi_keamanan_akses',
         'ket_lokasi_simpan',
         'status',
+        'is_read', // <--- WAJIB ADA SUPAYA BISA DIUPDATE ADMIN
         'kurun_waktu',
         'tingkat_perkembangan',
         'nomor_boks',
@@ -30,5 +30,11 @@ class Arsip extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+ 
+    public function histories()
+    {
+        // Kalau di database kolomnya misal 'id_arsip' atau 'arsips_id', ganti string kedua di bawah ini sesuai kolom aslinya di database!
+        return $this->hasMany(ArsipHistory::class, 'arsip_id', 'id'); 
     }
 }

@@ -17,41 +17,66 @@
             </div>
         </div>
 
-        <!-- 5 KOTAK ANALISIS (OTOMATIS MENGIKUTI USER YANG LOGIN) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+        <!-- 5 KOTAK ANALISIS (STABIL & REAL-TIME POLLING) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8"
+             x-data="{ 
+                stats: { 
+                    total: {{ $totalArsip ?? 0 }}, 
+                    aktif: {{ $arsipAktif ?? 0 }}, 
+                    pindah: {{ $arsipPindah ?? 0 }}, 
+                    musnah: {{ $arsipMusnah ?? 0 }}, 
+                    serah: {{ $arsipSerah ?? 0 }} 
+                },
+                fetchStats() {
+                    fetch('/api/notifications')
+                        .then(res => res.json())
+                        .then(data => { 
+                            if(data) {
+                                // Menyesuaikan dengan struktur data controller getNotificationCounts / dashboard
+                                this.stats.total = data.total ?? this.stats.total;
+                                this.stats.aktif = data.aktif ?? this.stats.aktif;
+                                this.stats.pindah = data.pindah ?? this.stats.pindah;
+                                this.stats.musnah = data.musnah ?? this.stats.musnah;
+                                this.stats.serah = data.serah ?? this.stats.serah;
+                            }
+                        });
+                }
+             }"
+             x-init="setInterval(() => fetchStats(), 4000)">
+            
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 text-xl shrink-0"><i class="fas fa-database"></i></div>
                 <div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Data</p>
-                    <h3 class="text-xl font-black text-slate-800">{{ $totalArsip ?? 0 }}</h3>
+                    <h3 class="text-xl font-black text-slate-800" x-text="stats.total"></h3>
                 </div>
             </div>
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 text-xl shrink-0"><i class="fas fa-folder-open"></i></div>
                 <div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Arsip Aktif</p>
-                    <h3 class="text-xl font-black text-slate-800">{{ $arsipAktif ?? 0 }}</h3>
+                    <h3 class="text-xl font-black text-slate-800" x-text="stats.aktif"></h3>
                 </div>
             </div>
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 text-xl shrink-0"><i class="fas fa-box-archive"></i></div>
                 <div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Inaktif (Pindah)</p>
-                    <h3 class="text-xl font-black text-slate-800">{{ $arsipPindah ?? 0 }}</h3>
+                    <h3 class="text-xl font-black text-slate-800" x-text="stats.pindah"></h3>
                 </div>
             </div>
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-600 text-xl shrink-0"><i class="fas fa-fire-alt"></i></div>
                 <div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Usul Musnah</p>
-                    <h3 class="text-xl font-black text-slate-800">{{ $arsipMusnah ?? 0 }}</h3>
+                    <h3 class="text-xl font-black text-slate-800" x-text="stats.musnah"></h3>
                 </div>
             </div>
             <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 text-xl shrink-0"><i class="fas fa-file-export"></i></div>
                 <div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Usul Serah</p>
-                    <h3 class="text-xl font-black text-slate-800">{{ $arsipSerah ?? 0 }}</h3>
+                    <h3 class="text-xl font-black text-slate-800" x-text="stats.serah"></h3>
                 </div>
             </div>
         </div>
